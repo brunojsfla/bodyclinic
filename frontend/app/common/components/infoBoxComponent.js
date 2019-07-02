@@ -5,6 +5,7 @@ app.component('infoboxComponent', {
         icon:'@',
         title:'@',
         text:'@',
+        reference:'@',
         whatsapp:'@',
         iconWhatsapp:'@',
         textWhatsapp:'@',
@@ -21,10 +22,10 @@ app.component('infoboxComponent', {
             <div class="info-box-content">
                 <span class="info-box-text"><b><u>{{ $ctrl.title }}</u></b></span>
                 <span class="info-box-text"><b>{{ $ctrl.text }}</b></span>
-                <a href="{{ $ctrl.whatsapp }}" target="_blank">
+                <a {{ $ctrl.reference }}"{{ $ctrl.whatsapp }}" target="_blank">
                     <span class="info-box-text"><i class="fa {{ $ctrl.iconWhatsapp }}"></i> {{ $ctrl.textWhatsapp }}</span>
                 </a>
-                <a href="{{ $ctrl.mail }}" target="_blank">
+                <a {{ $ctrl.reference }}"{{ $ctrl.mail }}" target="_blank">
                     <span class="info-box-text"><i class="fa {{ $ctrl.iconMail }}"></i> {{ $ctrl.textMail }}</span>
                 </a>
             </div>
