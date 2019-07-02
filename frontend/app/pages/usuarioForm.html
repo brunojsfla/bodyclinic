@@ -1,0 +1,55 @@
+<headerform-component text="Cadastro de usuários"></headerform-component>
+<div role="form" ng-controller="UsuarioCtrl as uctrl">
+    <div class="box-body">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Nome</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-circle"></i>
+                    </div>
+                    <input type="text" id="nome" class="form-control" placeholder="Nome...">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>CPF</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-instagram"></i>
+                    </div>
+                    <input type="text" class="form-control" data-inputmask="'mask': '999.999.999-99'" data-mask>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Email</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <input type="email" class="form-control" placeholder="email@email.com">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Perfil</label>
+                <select class="form-control">
+                    <option></option>
+                    <option>ADMINISTRADOR</option>
+                    <option>PROFISSIONAL</option>
+                    <option>AUXILIAR</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary">Inserir</button>
+        <button type="button" class="btn btn-info">Atualizar</button>
+        <button type="button" class="btn btn-danger">Excluir</button>
+        <button type="button" class="btn btn-default">Cancelar</button>
+    </div>
+</div>

@@ -29,10 +29,10 @@ app.component('tabsComponent', {
         </ul>
     </div>
     <div class="tab-content">
-        <div class="tab-pane active" id="list" ng-include="'{{ $ctrl.includeList }}'"></div>
-        <div class="tab-pane" id="insert" ng-include="'{{ $ctrl.includeForm }}'"></div>
-        <div class="tab-pane" id="update" ng-include="'{{ $ctrl.includeForm }}'"></div>
-        <div class="tab-pane" id="delete" ng-include="'{{ $ctrl.includeForm }}'"></div>
-    </div
+        <div class="tab-pane active" id="list" ng-include="$ctrl.includeList"></div>
+        <div class="tab-pane" id="insert" ng-include="$ctrl.includeForm"></div>
+        <div class="tab-pane" id="update" ng-include="$ctrl.includeForm"></div>
+        <div class="tab-pane" id="delete" ng-include="$ctrl.includeForm"></div>
+    </div>
     `
 });
