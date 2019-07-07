@@ -43,11 +43,16 @@ const validaCpf = function(cpf){
     return true;
 };
 
+function validaEmail(email){
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(email);
+};
+
 const usuarioSchema = new mongoose.Schema({
     nome : {type: String, required : true},
     cpf : {type: String, required : true, unique: true, validate:[validaCpf, 'O CPF informado é inválido!']},
     senha : {type: String, required : true, default: 'abc123'},
-    email : {type: String, required : true, unique: true},
+    email : {type: String, required : true, unique: true, trim: true, lowercase: true, validate:[validaEmail, 'O e-mail informado é inválido']},
     perfil : {type : String, required : true, uppercase : true , 
         enum : ['ADMINISTRADOR', 'PROFISSIONAL', 'AUXILIAR'] }
 });

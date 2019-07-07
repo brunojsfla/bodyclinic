@@ -15,8 +15,8 @@
                 <td>{{ usuario.cpf }}</td>
                 <td>{{ usuario.perfil }}</td>
                 <td class="table-actions">
-                    <button class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                    <button class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                    <button class="btn btn-warning" ng-click="uctrl.showUpdate(usuario)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="uctrl.showRemove(usuario)"><i class="fa fa-trash-o"></i></button>
                 </td>
             </tr>
         </tbody>
