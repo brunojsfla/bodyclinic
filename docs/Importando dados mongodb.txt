@@ -1,0 +1,1 @@
+mongoimport -d bancodedados -c collection --type csv --headerline --file arquivo.csv

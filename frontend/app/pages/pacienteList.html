@@ -1,0 +1,26 @@
+<div class="box body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Dt. Nascimento</th>
+                <th>Sexo</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="paciente in pCtrl.pacientes">
+                <td>{{ paciente.nome }}</td>
+                <td>{{ paciente.dtNasc }}</td>
+                <td>{{ paciente.sexo }}</td>
+                <td>{{ paciente.telefone }}</td>
+                <td>{{ paciente.email }}</td>
+                <td class="table-actions">
+                    <button class="btn btn-warning" ng-click="pCtrl.showUpdate(paciente)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="pCtrl.showRemove(paciente)"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

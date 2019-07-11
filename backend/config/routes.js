@@ -8,6 +8,10 @@ module.exports = function(server){
     const enderecoService = require('../api/services/enderecoService');
     enderecoService.register(rt, '/enderecos');
 
+    //Rota Municipios
+    const municipioService = require('../api/services/municipioService');
+    municipioService.register(rt, '/municipios');
+
     //Rota Ocupações
     const ocupacaoService = require('../api/services/ocupacaoService');
     ocupacaoService.register(rt, '/ocupacoes');

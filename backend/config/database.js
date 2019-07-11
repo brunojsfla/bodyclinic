@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 module.exports = mongoose.connect('mongodb://localhost:27017/body_clinic', {useNewUrlParser: true})
                             .then(()=>{console.log(`BD conectado com sucesso!`);},

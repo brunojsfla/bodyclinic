@@ -12,7 +12,7 @@
             <tr ng-repeat="usuario in uctrl.usuarios">
                 <td>{{ usuario.nome }}</td>
                 <td>{{ usuario.email }}</td>
-                <td>{{ usuario.cpf }}</td>
+                <td>{{ usuario.cpf | cpf }}</td>
                 <td>{{ usuario.perfil }}</td>
                 <td class="table-actions">
                     <button class="btn btn-warning" ng-click="uctrl.showUpdate(usuario)"><i class="fa fa-pencil"></i></button>
