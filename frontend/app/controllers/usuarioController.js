@@ -1,6 +1,9 @@
 (function(){
-    app.controller('UsuarioCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', function($http, urls, msgs, tabsFactory){
+    app.controller('UsuarioCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
         const self = this;
+
+        //Inicializações
+        self.perfil = bcUtils.getPerfil();
 
         self.saveUser = function(){
             $http.post(urls.usuarios, self.usuario).then(function(response){

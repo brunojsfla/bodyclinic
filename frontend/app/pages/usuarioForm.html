@@ -38,10 +38,7 @@
             <div class="form-group">
                 <label>Perfil</label>
                 <select class="form-control" name="usuarioPerfil" ng-disabled="uctrl.tabDelete" id="usuarioPerfil" ng-model="uctrl.usuario.perfil">
-                    <option></option>
-                    <option>ADMINISTRADOR</option>
-                    <option>PROFISSIONAL</option>
-                    <option>AUXILIAR</option>
+                    <option ng-repeat="perfil in uctrl.perfil">{{ perfil.nome }}</option>
                 </select>
             </div>
         </div>

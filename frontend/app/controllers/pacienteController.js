@@ -1,6 +1,10 @@
 (function(){
-    app.controller('PacienteCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', function($http, urls, msgs, tabsFactory){
+    app.controller('PacienteCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
         const self = this;
+        
+        //Inicializações
+        self.sexo = bcUtils.getSexo();
+        self.tipoLogradouro = bcUtils.getTipoLogradouro();
 
         self.savePaciente = function(){
             $http.post(urls.pacientes, self.paciente).then(function(response){
@@ -28,6 +32,7 @@
                 self.pacientes = response.data;
                 tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
                 console.log('Pacientes retornados : ' + self.pacientes.length);
+                self.getEstados();
             }, function(response){
                 console.log('Erro ao buscar pacientes: ',  response.data.errors);
             });
@@ -35,6 +40,7 @@
 
         self.showUpdate = function(paciente){
             self.paciente = paciente;
+            console.log(self.paciente);
             tabsFactory.showTabs(self, {tabUpdate: true});
         };
 
@@ -47,7 +53,7 @@
         self.setPaciente = function(){
             const urlUpdate = `${urls.pacientes}/${self.paciente._id}`;
             $http.put(urlUpdate, self.paciente).then(function(response){
-                self.getUsers();
+                self.getPacientes();
                 msgs.msgSuccess('Paciente alterado com sucesso!');    
             }, function(response){
                 msgs.msgError(response.data.errors);
@@ -64,6 +70,40 @@
                 msgs.msgError(response.data.errors);
                 console.error('Erro ao excluir paciente: ', response.data);
             });
+        };
+
+        self.getEstados = function(){
+            $http.get(urls.estados + '/?sort=nome').then(function(response){
+                self.estados = {};
+                self.estados = response.data;
+                console.log('Estados retornados: ', self.estados.length);
+            }, function(response){
+                console.error('Falha ao buscar ESTADOS: ', response.data);
+            });
+        };
+
+        self.getMunicipiosByEstado = function(estado){
+            if(estado){
+                self.estado = estado;
+                $http.get(urls.municipios + `/?siglaUf=${self.estado.siglaUf}&sort=nome`).then(function(response){
+                    self.municipios = {};
+                    self.municipios = response.data;
+                    console.log('Municípios retornados: ', self.municipios.length);
+                    }, function(response){
+                    console.error('Falha ao localizar MUNICÍPIOS: ', response.data);
+                    });
+            }else{
+                console.log('Nenhum estado selecionado');
+            }
+        };
+
+        self.getIdByMunicipio = function(municipio){
+            if(municipio){
+                console.log('Município: ' + municipio.nome + ' - ' + 'ID: ' + municipio._id);
+                return municipio._id;
+            }else{
+                console.log('Nenhum município selecionado');
+            }
         };
 
         self.getPacientes();

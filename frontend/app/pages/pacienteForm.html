@@ -3,6 +3,17 @@
     <div class="box-body">
         <div class="col-xs-12 col-sm-6">
             <div class="form-group">
+                <label>Prontuário</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-tag"></i>
+                    </div>
+                    <input type="text" id="prontuario" class="form-control" ng-disabled="true" ng-model="pCtrl.paciente._id">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
                 <label>Nome</label>
                 <div class="input-group">
                     <div class="input-group-addon">
@@ -12,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-xs-12 col-sm-3">
             <div class="form-group">
                 <label>Dt. Nascimento</label>
                 <div class="input-group date">
@@ -20,6 +31,58 @@
                         <i class="fa fa-calendar"></i>
                     </div>
                     <input type="text" class="form-control pull-right" id="datepicker" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.dtNasc" ui-mask="99/99/9999">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Sexo</label>
+                <select class="form-control" name="pacienteSexo" ng-disabled="pCtrl.tabDelete" id="pacienteSexo" ng-model="pCtrl.paciente.sexo">
+                    <option ng-repeat="sexo in pCtrl.sexo">{{ sexo.nome }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>CPF</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-newspaper-o"></i>
+                    </div>
+                    <input type="text" class="form-control" id="cpf" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.cpf" ui-mask="999.999.999-99">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Cartão SUS</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-credit-card"></i>
+                    </div>
+                    <input type="text" class="form-control" id="cns" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.cns" ui-mask="999.9999.9999.9999">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Mãe</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-circle"></i>
+                    </div>
+                    <input type="text" id="nomeMae" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.nomeMae" placeholder="Nome da mãe...">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Pai</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-circle"></i>
+                    </div>
+                    <input type="text" id="nomePai" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.nomePai" placeholder="Nome do pai...">
                 </div>
             </div>
         </div>
@@ -34,22 +97,124 @@
                 </div>
             </div>
         </div>
-        <!--<div class="col-xs-12 col-sm-6">
+        <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Perfil</label>
-                <select class="form-control" name="pacientePerfil" ng-disabled="pCtrl.tabDelete" id="pacientePerfil" ng-model="pCtrl.paciente.perfil">
-                    <option></option>
-                    <option>ADMINISTRADOR</option>
-                    <option>PROFISSIONAL</option>
-                    <option>AUXILIAR</option>
-                </select>
+                <label>Tel. Fixo</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <input type="text" class="form-control" id="telFixo" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.telefoneFixo" ui-mask="(99)9999-9999">
+                </div>
             </div>
-        </div>-->
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Tel. Celular</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-mobile-phone"></i>
+                    </div>
+                    <input type="text" class="form-control" id="telCelular" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.telefoneCelular" ui-mask="(99)99999-9999">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Endereço</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="form-group">
+                            <label>CEP</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-map"></i>
+                                </div>
+                                <input type="text" id="cep" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.cep" ui-mask="99.999-999" required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-3">
+                        <div class="form-group">
+                            <label>Tipo de logradouro</label>
+                            <select class="form-control" name="tipo" id="tipoLogradouro" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.tipo">
+                                <option ng-repeat="tipo in pCtrl.tipoLogradouro">{{ tipo }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Logradouro</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-map-signs"></i>
+                                </div>
+                                <input type="text" id="logradouro" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.logradouro" placeholder="Logradouro..." required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Bairro</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-map-signs"></i>
+                                </div>
+                                <input type="text" id="bairro" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.bairro" placeholder="Bairro..." required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label>Complemento</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-building-o"></i>
+                                </div>
+                                <input type="text" id="complemento" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.complemento" placeholder="Complemento..." required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-2">
+                        <div class="form-group">
+                            <label>Número</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-bookmark"></i>
+                                </div>
+                                <input type="text" id="numero" class="form-control" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.numero" placeholder="Número..." required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select class="form-control" name="estado" id="estado" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.estado" ng-options="e.nome for e in pCtrl.estados track by e.nome" ng-change="pCtrl.getMunicipiosByEstado(pCtrl.paciente.endereco.municipio.estado)"></select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+                        <div class="form-group">
+                            <label>Município</label>
+                            <select class="form-control" name="municipio" id="municipio" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.nome" ng-options="m.nome for m in pCtrl.municipios track by m.nome">
+                                <!--<option ng-repeat="mun in pCtrl.municipios">{{ mun.nome }}</option>-->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="box-footer">
-        <button type="button" class="btn btn-primary" ng-if="pCtrl.tabCreate" ng-click="pCtrl.saveUser()">Salvar</button>
-        <button type="button" class="btn btn-info" ng-if="pCtrl.tabUpdate" ng-click="pCtrl.setUser()">Atualizar</button>
-        <button type="button" class="btn btn-danger" ng-if="pCtrl.tabDelete" ng-click="pCtrl.deleteUser()">Excluir</button>
+        <button type="button" class="btn btn-primary" ng-if="pCtrl.tabCreate" ng-click="pCtrl.savePaciente()">Salvar</button>
+        <button type="button" class="btn btn-info" ng-if="pCtrl.tabUpdate" ng-click="pCtrl.setPaciente()">Atualizar</button>
+        <button type="button" class="btn btn-danger" ng-if="pCtrl.tabDelete" ng-click="pCtrl.deletePaciente()">Excluir</button>
         <button type="button" class="btn btn-default" ng-click="pCtrl.getPacientes()">Cancelar</button>
     </div>
 </div>

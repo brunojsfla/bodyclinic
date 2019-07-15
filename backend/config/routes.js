@@ -4,9 +4,9 @@ module.exports = function(server){
     const rt = express.Router();
     server.use('/apibc', rt);
 
-    //Rota Endereços
-    const enderecoService = require('../api/services/enderecoService');
-    enderecoService.register(rt, '/enderecos');
+    //Rota Estados
+    const estadoService = require('../api/services/estadoService');
+    estadoService.register(rt, '/estados');
 
     //Rota Municipios
     const municipioService = require('../api/services/municipioService');
