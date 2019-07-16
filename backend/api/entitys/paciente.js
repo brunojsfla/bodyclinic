@@ -1,14 +1,14 @@
 const restfull = require('node-restful');
 const mongoose = restfull.mongoose;
+const moment = require('moment');
 const usuario = require('./usuario');
-const municipio = require('./municipio');
 const validaCpf = require('../validators/validaCpf');
 const validaEmail = require('../validators/validaEmail');
 const validaCns = require('../validators/validaCns');
 
 const pacienteSchema = new mongoose.Schema({
     nome : {type: String, required : true},
-    dtNasc : {type: Date, required : true, max: Date.now},
+    dtNasc : {type: Date, required : true, default: moment().format('L'), max: Date.now},
     sexo : {type: String, required : true, uppercase : true, enum : ['MASCULINO', 'FEMININO']},
     nomePai : String,
     nomeMae : String,

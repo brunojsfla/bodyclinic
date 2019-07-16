@@ -40,18 +40,19 @@
 
         self.showUpdate = function(paciente){
             self.paciente = paciente;
-            console.log(self.paciente);
+            self.setFieldsPaciente(self.paciente);
             tabsFactory.showTabs(self, {tabUpdate: true});
         };
 
         self.showRemove = function(paciente){
             self.paciente = paciente;
-            msgs.msgInfo('Por favor, verifique os dados e clique no botão EXCLUIR caso queira realmente remover o paciente ou clique em CANCELAR para retornar.');
+            self.setFieldsPaciente(self.paciente);
             tabsFactory.showTabs(self, {tabDelete: true});
-        }
+        };
 
         self.setPaciente = function(){
             const urlUpdate = `${urls.pacientes}/${self.paciente._id}`;
+            self.paciente.dtAlt = new Date();
             $http.put(urlUpdate, self.paciente).then(function(response){
                 self.getPacientes();
                 msgs.msgSuccess('Paciente alterado com sucesso!');    
@@ -97,12 +98,25 @@
             }
         };
 
-        self.getIdByMunicipio = function(municipio){
-            if(municipio){
-                console.log('Município: ' + municipio.nome + ' - ' + 'ID: ' + municipio._id);
-                return municipio._id;
+        self.setFieldsPaciente = function(paciente){
+            if(paciente){
+                // Seta Data de Nascimento
+                self.paciente.dtNasc = new Date(self.paciente.dtNasc);
+                // Seta Estado
+                $http.get(urls.estados + '/' + paciente.endereco.municipio.estado).then(function(response){
+                    self.paciente.endereco.municipio.estado = response.data;
+                }, function(response){
+                    console.error('Falha ao recuperar estado de origem do paciente: ', response.data);
+                });
+                // Seta Município
+                $http.get(urls.municipios + '/' + paciente.endereco.municipio.nome).then(function(response){
+                    self.getMunicipiosByEstado(self.paciente.endereco.municipio.estado);
+                    self.paciente.endereco.municipio.nome = response.data;
+                }, function(response){
+                    console.error('Falha ao recuperar município de origem do paciente: ', response.data);
+                });
             }else{
-                console.log('Nenhum município selecionado');
+                console.log('Nenhum paciente selecionado');
             }
         };
 

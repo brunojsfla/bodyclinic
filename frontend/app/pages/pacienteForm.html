@@ -25,12 +25,12 @@
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Dt. Nascimento</label>
+                <label>Data de Nascimento</label>
                 <div class="input-group date">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right" id="datepicker" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.dtNasc" ui-mask="99/99/9999">
+                    <input type="date" class="form-control pull-right" id="dtNasc" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.dtNasc">
                 </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Tel. Fixo</label>
+                <label>Telefone Fixo</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-phone"></i>
@@ -110,7 +110,7 @@
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Tel. Celular</label>
+                <label>Telefone Celular</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-mobile-phone"></i>
@@ -196,15 +196,13 @@
                     <div class="col-xs-12 col-sm-5">
                         <div class="form-group">
                             <label>Estado</label>
-                            <select class="form-control" name="estado" id="estado" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.estado" ng-options="e.nome for e in pCtrl.estados track by e.nome" ng-change="pCtrl.getMunicipiosByEstado(pCtrl.paciente.endereco.municipio.estado)"></select>
+                            <select class="form-control" name="estado" id="estado" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.estado" ng-options="e.nome for e in pCtrl.estados track by e._id" ng-change="pCtrl.getMunicipiosByEstado(pCtrl.paciente.endereco.municipio.estado)"></select>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-5">
                         <div class="form-group">
                             <label>Município</label>
-                            <select class="form-control" name="municipio" id="municipio" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.nome" ng-options="m.nome for m in pCtrl.municipios track by m.nome">
-                                <!--<option ng-repeat="mun in pCtrl.municipios">{{ mun.nome }}</option>-->
-                            </select>
+                            <select class="form-control" name="municipio" id="municipio" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.nome" ng-options="m.nome for m in pCtrl.municipios track by m._id"></select>
                         </div>
                     </div>
                 </div>

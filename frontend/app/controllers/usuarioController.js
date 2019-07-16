@@ -41,7 +41,7 @@
 
         self.showRemove = function(usuario){
             self.usuario = usuario;
-            msgs.msgInfo('Por favor, verifique os dados e clique no botão EXCLUIR caso queira realmente remover o usuário ou clique em CANCELAR para retornar.');
+            //msgs.msgInfo('Por favor, verifique os dados e clique no botão EXCLUIR caso queira realmente remover o usuário ou clique em CANCELAR para retornar.');
             tabsFactory.showTabs(self, {tabDelete: true});
         }
 
