@@ -37,9 +37,14 @@
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
                 <label>Sexo</label>
-                <select class="form-control" name="pacienteSexo" ng-disabled="pCtrl.tabDelete" id="pacienteSexo" ng-model="pCtrl.paciente.sexo">
-                    <option ng-repeat="sexo in pCtrl.sexo">{{ sexo.nome }}</option>
-                </select>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-venus-mars"></i>
+                        </div>
+                    <select class="form-control" name="pacienteSexo" ng-disabled="pCtrl.tabDelete" id="pacienteSexo" ng-model="pCtrl.paciente.sexo">
+                        <option ng-repeat="sexo in pCtrl.sexo">{{ sexo.nome }}</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-3">
@@ -144,9 +149,14 @@
                     <div class="col-xs-12 col-sm-3">
                         <div class="form-group">
                             <label>Tipo de logradouro</label>
-                            <select class="form-control" name="tipo" id="tipoLogradouro" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.tipo">
-                                <option ng-repeat="tipo in pCtrl.tipoLogradouro">{{ tipo }}</option>
-                            </select>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-road"></i>
+                                </div>
+                                <select class="form-control" name="tipo" id="tipoLogradouro" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.tipo">
+                                    <option ng-repeat="tipo in pCtrl.tipoLogradouro">{{ tipo }}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
@@ -196,13 +206,23 @@
                     <div class="col-xs-12 col-sm-5">
                         <div class="form-group">
                             <label>Estado</label>
-                            <select class="form-control" name="estado" id="estado" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.estado" ng-options="e.nome for e in pCtrl.estados track by e._id" ng-change="pCtrl.getMunicipiosByEstado(pCtrl.paciente.endereco.municipio.estado)"></select>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-location-arrow"></i>
+                                </div>
+                                <select class="form-control" name="estado" id="estado" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.estado" ng-options="e.nome for e in pCtrl.estados track by e._id" ng-change="pCtrl.getMunicipiosByEstado(pCtrl.paciente.endereco.municipio.estado)"></select>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-5">
                         <div class="form-group">
                             <label>Município</label>
-                            <select class="form-control" name="municipio" id="municipio" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.nome" ng-options="m.nome for m in pCtrl.municipios track by m._id"></select>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-home"></i>
+                                </div>
+                                <select class="form-control" name="municipio" id="municipio" ng-disabled="pCtrl.tabDelete" ng-model="pCtrl.paciente.endereco.municipio.nome" ng-options="m.nome for m in pCtrl.municipios track by m._id"></select>
+                            </div>
                         </div>
                     </div>
                 </div>

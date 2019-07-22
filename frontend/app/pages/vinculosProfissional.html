@@ -1,0 +1,47 @@
+<div class="col-xs-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ocupação</th>
+                <th>Data de Admissão</th>
+                <th ng-if="prCtrl.tabUpdate">Data de Demissão</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ocupacao in prCtrl.profissional.cbo">
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-graduation-cap"></i>
+                        </div>
+                        <select class="form-control" name="ocupacao" ng-disabled="prCtrl.tabDelete" id="ocupacao" ng-model="ocupacao.ocupacao">
+                            <option ng-repeat="o in prCtrl.ocupacoes">{{ o.cbo }} - {{ o.nome }}</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <input type="date" class="form-control pull-right" id="dtAdmissao" 
+                        ng-disabled="prCtrl.tabDelete" ng-model="ocupacao.dtAdmissao">
+                    </div>
+                </td>
+                <td ng-if="prCtrl.tabUpdate">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-close"></i>
+                        </div>
+                        <input type="date" class="form-control pull-right" id="dtDemissao" 
+                         ng-model="ocupacao.dtDemissao">
+                    </div>
+                </td>
+                <td class="table-actions">
+                    <button class="btn btn-success" ng-if="!prCtrl.tabDelete" ng-click="prCtrl.addOcupacao($index)"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-danger" ng-if="!prCtrl.tabDelete" ng-click="prCtrl.deleteOcupacao($index)"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

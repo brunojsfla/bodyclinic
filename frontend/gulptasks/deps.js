@@ -18,7 +18,8 @@ gulp.task('deps.js', function(){
         'node_modules/admin-lte/plugins/input-mask/jquery.inputmask.js',
         'node_modules/admin-lte/plugins/input-mask/jquery.inputmask.date.extensions.js',
         'node_modules/admin-lte/plugins/input-mask/jquery.inputmask.extensions.js',
-        'node_modules/angular-ui-mask/dist/mask.min.js'
+        'node_modules/angular-ui-mask/dist/mask.min.js',
+        'node_modules/ui-select/dist/select.min.js'
     ])
     .pipe(uglify())
     .pipe(concat('deps.min.js'))

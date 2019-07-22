@@ -1,0 +1,24 @@
+<div class="box body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Vínculos</th>
+                <th>Contato</th>
+                <th>E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="profissional in prCtrl.profissionais">
+                <td>{{ profissional.nome }}</td>
+                <td ng-repeat="vinculo in profissional.cbo">{{ vinculo.dtAdmissao | date:'dd/MM/yyyy' }} - {{ vinculo.ocupacao }}</td>
+                <td>{{ profissional.telefone | telCelular }}</td>
+                <td>{{ profissional.email }}</td>
+                <td class="table-actions">
+                    <button class="btn btn-warning" ng-click="prCtrl.showUpdate(profissional)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="prCtrl.showRemove(profissional)"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
