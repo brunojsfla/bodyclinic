@@ -3,7 +3,6 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Vínculos</th>
                 <th>Contato</th>
                 <th>E-mail</th>
             </tr>
@@ -11,7 +10,6 @@
         <tbody>
             <tr ng-repeat="profissional in prCtrl.profissionais">
                 <td>{{ profissional.nome }}</td>
-                <td ng-repeat="vinculo in profissional.cbo">{{ vinculo.dtAdmissao | date:'dd/MM/yyyy' }} - {{ vinculo.ocupacao }}</td>
                 <td>{{ profissional.telefone | telCelular }}</td>
                 <td>{{ profissional.email }}</td>
                 <td class="table-actions">

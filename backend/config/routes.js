@@ -32,5 +32,7 @@ module.exports = function(server){
     const profissionalService = require('../api/services/profissionalService');
     profissionalService.register(rt, '/profissionais');
 
-    //Rota Atendimento
+    //Rota Suspensão de Escala
+    const suspensaoEscalaService = require('../api/services/suspensaoEscalaService');
+    suspensaoEscalaService.register(rt, '/suspensoes');
 };

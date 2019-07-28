@@ -74,6 +74,21 @@
 
         };
 
-        return { getSexo, getPerfil, getTipoLogradouro };
+        function getMotivoSuspensaoEscala(){
+            let motivo = [];
+
+            motivo.push({valor: 0, nome: 'FÉRIAS'});
+            motivo.push({valor: 1, nome: 'FOLGA'});
+            motivo.push({valor: 2, nome:'LUTO'});
+            motivo.push({valor: 2, nome:'CONGRESSO'});
+            motivo.push({valor: 2, nome:'CONDIÇÃO DE SAÚDE'});
+            motivo.push({valor: 2, nome:'CONDIÇÃO DE TRABALHO'});
+            motivo.push({valor: 2, nome:'DETERMINAÇÃO LEGAL'});
+            motivo.push({valor: 2, nome:'OUTRO'});
+
+            return motivo;
+        };
+
+        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala };
     }]);
 })();

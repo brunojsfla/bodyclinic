@@ -6,6 +6,7 @@
         ocupacoes: 'http://localhost:3003/apibc/ocupacoes',
         procedimentos: 'http://localhost:3003/apibc/procedimentos',
         pacientes: 'http://localhost:3003/apibc/pacientes',
-        profissionais: 'http://localhost:3003/apibc/profissionais'
+        profissionais: 'http://localhost:3003/apibc/profissionais',
+        suspensoes: 'http://localhost:3003/apibc/suspensoes'
     });
 })()

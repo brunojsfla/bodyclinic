@@ -1,0 +1,68 @@
+<headerform-component text="Cadastro de Suspensão de Escala"></headerform-component>
+<div class="form" role="form">
+    <div class="box-body">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Profissional</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-user-md"></i>
+                    </div>
+                    <select class="form-control" name="profissional" id="profissional" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.profissional" ng-options="s.nome for s in sCtrl.profissionais track by s._id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Data de Início</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtInicio" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.dtInicio">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Data de Término</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtTermino" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.dtTermino">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Motivo</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-suitcase"></i>
+                    </div>
+                    <select class="form-control" name="motivo" id="motivo" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.motivo">
+                        <option ng-repeat="motivo in sCtrl.motivos">{{ motivo.nome }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="form-group">
+                <label>Descrição</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-circle"></i>
+                    </div>
+                    <input type="text" id="descricao" class="form-control" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.descricao" placeholder="Descrição da suspensão...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate" ng-click="sCtrl.saveSuspensao()">Salvar</button>
+        <button type="button" class="btn btn-info" ng-if="sCtrl.tabUpdate" ng-click="sCtrl.setSuspensao()">Atualizar</button>
+        <button type="button" class="btn btn-danger" ng-if="sCtrl.tabDelete" ng-click="sCtrl.deleteSuspensao()">Excluir</button>
+        <button type="button" class="btn btn-default" ng-click="sCtrl.getSuspensoes()">Cancelar</button>
+    </div>
+</div>
