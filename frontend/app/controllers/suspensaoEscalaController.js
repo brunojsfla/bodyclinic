@@ -6,6 +6,28 @@
         self.motivos = bcUtils.getMotivoSuspensaoEscala();
 
         self.saveSuspensao = function(){
+            // Validações 
+            let dtInicio = new Date(self.suspensao.dtInicio);
+            let dtTermino = new Date(self.suspensao.dtTermino);
+            console.log('Data: ', dtInicio);
+            //data de término ser maior que data de início
+            if(dtTermino < dtInicio){
+                msgs.msgError('Data de término anterior a Data de Início.');
+                return;
+            }
+
+            //suspensão para o mesmo período e mesmo profissional
+            for(let i = 0; i < self.suspensoes.length; i++){
+                let dtInicioAux = new Date(self.suspensoes[i].dtInicio);
+                let dtTerminoAux = new Date(self.suspensoes[i].dtTermino);
+                if(self.suspensao.profissional._id === self.suspensoes[i].profissional._id){
+                    if(dtInicio >= dtInicioAux && dtInicio <= dtTerminoAux){
+                        msgs.msgError(`O profissional ${self.suspensoes[i].profissional.nome} já possui uma suspensão de escala por motivo de ${self.suspensoes[i].motivo} para o período informado.`);
+                        return;
+                    }
+                }
+            }
+                
             $http.post(urls.suspensoes, self.suspensao).then(function(response){
                 self.getSuspensoes();
                 msgs.msgSuccess('Suspensão de Escala salva com sucesso!');
@@ -19,7 +41,18 @@
             $http.get(urls.suspensoes+'?sort=dtInicio').then(function(response){
                 console.log('Atualizando lista de suspensões de escala...');
                 self.suspensao = {};
-                self.suspensoes = response.data;
+                let suspensoesAux = response.data; 
+                for(let i = 0; i < suspensoesAux.length; i++){
+                    $http.get(urls.profissionais + '/' + suspensoesAux[i].profissional).then(function(response){
+                        for(let j = 0; j < suspensoesAux.length; j++){
+                            if(response.data._id === suspensoesAux[j].profissional)
+                                suspensoesAux[j].profissional = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar profissional: ', response.data);
+                    });
+                }
+                self.suspensoes = suspensoesAux;
                 tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
                 console.log('Suspensões de escala retornadas : ' + self.suspensoes.length);
                 self.getProfissionais();
@@ -88,6 +121,7 @@
             if(suspensao){
                 $http.get(urls.profissionais + '/' + suspensao.profissional).then(function(response){
                     self.suspensao.profissional = response.data;
+                    self.profissional = response.data;
                 }, function(response){
                     console.error('Falha ao recuperar profissional: ', response.data);
                 });

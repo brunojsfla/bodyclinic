@@ -10,7 +10,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="suspensao in sCtrl.suspensoes">
-                <td>{{ suspensao.profissional }}</td>
+                <td>{{ suspensao.profissional.nome }}</td>
                 <td>{{ suspensao.dtInicio | date:'dd/MM/yyyy' }}</td>
                 <td>{{ suspensao.dtTermino | date:'dd/MM/yyyy' }}</td>
                 <td>{{ suspensao.motivo }}</td>
