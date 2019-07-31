@@ -79,16 +79,30 @@
 
             motivo.push({valor: 0, nome: 'FÉRIAS'});
             motivo.push({valor: 1, nome: 'FOLGA'});
-            motivo.push({valor: 2, nome:'LUTO'});
-            motivo.push({valor: 2, nome:'CONGRESSO'});
-            motivo.push({valor: 2, nome:'CONDIÇÃO DE SAÚDE'});
-            motivo.push({valor: 2, nome:'CONDIÇÃO DE TRABALHO'});
-            motivo.push({valor: 2, nome:'DETERMINAÇÃO LEGAL'});
-            motivo.push({valor: 2, nome:'OUTRO'});
+            motivo.push({valor: 3, nome:'LUTO'});
+            motivo.push({valor: 4, nome:'CONGRESSO'});
+            motivo.push({valor: 5, nome:'CONDIÇÃO DE SAÚDE'});
+            motivo.push({valor: 6, nome:'CONDIÇÃO DE TRABALHO'});
+            motivo.push({valor: 7, nome:'DETERMINAÇÃO LEGAL'});
+            motivo.push({valor: 8, nome:'OUTRO'});
 
             return motivo;
         };
 
-        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala };
+        function getDiasSemana(){
+            let diasSemana = [];
+
+            diasSemana.push({valor: 0, nome: 'DOMINGO'});
+            diasSemana.push({valor: 1, nome: 'SEGUNDA-FEIRA'});
+            diasSemana.push({valor: 2, nome: 'TERÇA-FEIRA'});
+            diasSemana.push({valor: 3, nome: 'QUARTA-FEIRA'});
+            diasSemana.push({valor: 4, nome: 'QUINTA-FEIRA'});
+            diasSemana.push({valor: 5, nome: 'SEXTA-FEIRA'});
+            diasSemana.push({valor: 6, nome: 'SÁBADO'});
+
+            return diasSemana;
+        };
+
+        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana };
     }]);
 })();

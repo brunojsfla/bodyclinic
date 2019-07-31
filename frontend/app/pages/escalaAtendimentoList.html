@@ -1,0 +1,22 @@
+<div class="box body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Profissional</th>
+                <th>Ocupação</th>
+                <th>Dia da semana</th>
+                <th>Início</th>
+                <th>Término</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="escala in eaCtrl.escalas">
+                <td class="table-actions">
+                    <button class="btn btn-warning" ng-click="sCtrl.showUpdate(suspensao)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="sCtrl.showRemove(suspensao)"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>  
+    </table>
+</div>
+    

@@ -35,4 +35,8 @@ module.exports = function(server){
     //Rota Suspensão de Escala
     const suspensaoEscalaService = require('../api/services/suspensaoEscalaService');
     suspensaoEscalaService.register(rt, '/suspensoes');
+
+    //Rota Escala de Atendimento
+    const escalaAtendimentoService = require('../api/services/escalaAtendimentoService');
+    escalaAtendimentoService.register(rt, '/escalas');
 };

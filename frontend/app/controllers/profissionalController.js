@@ -11,15 +11,12 @@
                 msgs.msgSuccess('Profissional salvo com sucesso!');
             }, function(response){
                 if(response.data.code === 11000){
-                    if(response.data.errmsg.includes('cpf'))
-                        msgs.msgError('O CPF informado já existe para um profissional cadastrado!');
-                    if(response.data.errmsg.includes('email'))
-                        msgs.msgError('O e-mail informado já existe para um profissional cadastrado!');
-                    if(response.data.errmsg.includes('cns'))
-                        msgs.msgError('O CNS informado já existe para um profissional cadastrado!');
+                    if(response.data.errmsg.includes('cpf_1_ocupacao_1'))
+                        msgs.msgError('A ocupação selecionada já existe para o profissional!');
                 }else{
                     msgs.msgError(response.data.errors);
                 }
+                msgs.msgError(response.data.errors);
                 console.error('Erro ao salvar profissional: ', response.data);
             });
         };
@@ -27,8 +24,19 @@
         self.getProfissionais = function(){
             $http.get(urls.profissionais+'?sort=dtAdmissao').then(function(response){
                 console.log('Atualizando lista de profissionais...');
-                self.profissional = {cbo:[{}]};
-                self.profissionais = response.data;
+                self.profissional = {};
+                let profissionaisAux = response.data; 
+                for(let i = 0; i < profissionaisAux.length; i++){
+                    $http.get(urls.ocupacoes + '/' + profissionaisAux[i].ocupacao).then(function(response){
+                        for(let j = 0; j < profissionaisAux.length; j++){
+                            if(response.data._id === profissionaisAux[j].ocupacao)
+                                profissionaisAux[j].ocupacao = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar ocupação para lista de profissionais: ', response.data);
+                    });
+                }
+                self.profissionais = profissionaisAux;
                 tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
                 console.log('Profissionais retornados : ' + self.profissionais.length);
                 self.getOcupacoes();
@@ -72,16 +80,6 @@
             });
         };
 
-        self.addOcupacao = function(index){
-            self.profissional.cbo.splice(index + 1, 0, {});
-        };
-
-        self.deleteOcupacao = function(index){
-            if(self.profissional.cbo.length > 1){
-                self.profissional.cbo.splice(index, 1);
-            }
-        };
-
         self.getOcupacoes = function(){
             $http.get(urls.ocupacoes+'?sort=nome').then(function(response){
                 console.log('Atualizando lista de ocupações...');
@@ -96,11 +94,36 @@
         self.setFieldsProfissional = function(profissional){
             if(profissional){
                 self.profissional.dtNasc = new Date(self.profissional.dtNasc);
-                for(var i = 0; i < self.profissional.cbo.length; i++){
-                    self.profissional.cbo[i].dtAdmissao = new Date(self.profissional.cbo[i].dtAdmissao);
-                    self.profissional.cbo[i].dtDemissao = new Date(self.profissional.cbo[i].dtDemissao);
-                }
+                self.profissional.dtAdmissao = new Date(self.profissional.dtAdmissao);
+                if(profissional.dtDemissao)
+                    self.profissional.dtDemissao = new Date(self.profissional.dtDemissao);
+
+                $http.get(urls.ocupacoes + '/' + profissional.ocupacao._id).then(function(response){
+                    self.profissional.ocupacao = response.data;
+                }, function(response){
+                    console.error('Falha ao recuperar ocupação: ', response.data);
+                });
+                
             }
+        };
+
+        self.autoInsertProfissional = function(cpf){
+            if(cpf < 11)
+                return;
+            
+            $http.get(urls.profissionais+'/?cpf='+cpf).then(function(response){                
+                console.log('Auto Complete profissional: ', response.data);
+                self.profissional.cnsProfissional = response.data[0].cnsProfissional;
+                self.profissional.nome = response.data[0].nome;
+                self.profissional.dtNasc = new Date(response.data[0].dtNasc);
+                self.profissional.sexo = response.data[0].sexo;
+                self.profissional.crm = response.data[0].crm;
+                self.profissional.telefone = response.data[0].telefone;
+                self.profissional.email = response.data[0].email;
+            }, function(response){
+                console.error('Falha ao recuperar profissional: ', response.data);
+            });   
+
         };
 
         self.getProfissionais();
