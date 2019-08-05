@@ -5,10 +5,10 @@
         //Inicializações
         self.diasSemana = bcUtils.getDiasSemana();
 
-        self.saveSuspensao = function(){
+        self.saveEscala = function(){
             // Validações 
-            let dtInicio = new Date(self.suspensao.dtInicio);
-            let dtTermino = new Date(self.suspensao.dtTermino);
+            let dtInicio = new Date(self.escala.dtInicio);
+            let dtTermino = new Date(self.escala.dtTermino);
             console.log('Data: ', dtInicio);
             //data de término ser maior que data de início
             if(dtTermino < dtInicio){
@@ -16,82 +16,82 @@
                 return;
             }
 
-            //suspensão para o mesmo período e mesmo profissional
-            for(let i = 0; i < self.suspensoes.length; i++){
-                let dtInicioAux = new Date(self.suspensoes[i].dtInicio);
-                let dtTerminoAux = new Date(self.suspensoes[i].dtTermino);
-                if(self.suspensao.profissional._id === self.suspensoes[i].profissional._id){
+            //Escala para o mesmo período e mesmo profissional
+            for(let i = 0; i < self.escalas.length; i++){
+                let dtInicioAux = new Date(self.escalas[i].dtInicio);
+                let dtTerminoAux = new Date(self.escalas[i].dtTermino);
+                if(self.escala.profissional._id === self.escalas[i].profissional._id){
                     if(dtInicio >= dtInicioAux && dtInicio <= dtTerminoAux){
-                        msgs.msgError(`O profissional ${self.suspensoes[i].profissional.nome} já possui uma suspensão de escala por motivo de ${self.suspensoes[i].motivo} para o período informado.`);
+                        msgs.msgError(`O profissional ${self.escalas[i].profissional.nome} já possui uma escala de atendimento para o período informado.`);
                         return;
                     }
                 }
             }
                 
-            $http.post(urls.suspensoes, self.suspensao).then(function(response){
-                self.getSuspensoes();
-                msgs.msgSuccess('Suspensão de Escala salva com sucesso!');
+            $http.post(urls.escalas, self.escala).then(function(response){
+                self.getEscalas();
+                msgs.msgSuccess('Escala de Atendimento salva com sucesso!');
             }, function(response){
                 msgs.msgError(response.data.errors);
-                console.error('Erro ao salvar suspensão de escala: ', response.data);
+                console.error('Erro ao salvar escala de atendimento: ', response.data);
             });
         };
 
-        self.getSuspensoes = function(){
-            $http.get(urls.suspensoes+'?sort=dtInicio').then(function(response){
-                console.log('Atualizando lista de suspensões de escala...');
-                self.suspensao = {};
-                let suspensoesAux = response.data; 
-                for(let i = 0; i < suspensoesAux.length; i++){
-                    $http.get(urls.profissionais + '/' + suspensoesAux[i].profissional).then(function(response){
-                        for(let j = 0; j < suspensoesAux.length; j++){
-                            if(response.data._id === suspensoesAux[j].profissional)
-                                suspensoesAux[j].profissional = response.data;
+        self.getEscalas = function(){
+            $http.get(urls.escalas+'?sort=profissional').then(function(response){
+                console.log('Atualizando lista de escalas de atendimento...');
+                self.escala = {};
+                let escalasAux = response.data; 
+                for(let i = 0; i < escalasAux.length; i++){
+                    $http.get(urls.profissionais + '/' + escalasAux[i].profissional).then(function(response){
+                        for(let j = 0; j < escalasAux.length; j++){
+                            if(response.data._id === escalasAux[j].profissional)
+                                escalasAux[j].profissional = response.data;
                         }
                     }, function(response){
-                        console.error('Falha ao recuperar profissional: ', response.data);
+                        console.error('Falha ao recuperar profissional para lista de escalas: ', response.data);
                     });
                 }
-                self.suspensoes = suspensoesAux;
+                self.escalas = escalasAux;
                 tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
-                console.log('Suspensões de escala retornadas : ' + self.suspensoes.length);
+                console.log('Escalas de atendimento retornadas : ' + self.escalas.length);
                 self.getProfissionais();
             }, function(response){
-                console.error('Erro ao buscar suspensões de escala: ',  response.data.errors);
+                console.error('Erro ao buscar escalas de atendimento: ',  response.data.errors);
             });
         };
 
-        self.showUpdate = function(suspensao){
-            self.suspensao = suspensao;
-            self.setFieldsSuspensao(suspensao);
+        self.showUpdate = function(escala){
+            self.escala = escala;
+            self.setFieldsEscala(escala);
             tabsFactory.showTabs(self, {tabUpdate: true});
         };
 
-        self.showRemove = function(suspensao){
-            self.suspensao = suspensao;
-            self.setFieldsSuspensao(suspensao);
+        self.showRemove = function(escala){
+            self.escala = escala;
+            self.setFieldsEscala(escala);
             tabsFactory.showTabs(self, {tabDelete: true});
         };
 
-        self.setSuspensao = function(){
-            const urlUpdate = `${urls.suspensoes}/${self.suspensao._id}`;
-            $http.put(urlUpdate, self.suspensao).then(function(response){
-                self.getSuspensoes();
-                msgs.msgSuccess('Suspensão de Escala alterada com sucesso!');    
+        self.setEscala = function(){
+            const urlUpdate = `${urls.escalas}/${self.escala._id}`;
+            $http.put(urlUpdate, self.escala).then(function(response){
+                self.getEscalas();
+                msgs.msgSuccess('Escala de Atendimento alterada com sucesso!');    
             }, function(response){
                 msgs.msgError(response.data.errors);
-                console.error('Erro ao alterar suspensao de escala: ', response.data);
+                console.error('Erro ao alterar escala de atendimento: ', response.data);
             });
         };
 
-        self.deleteSuspensao = function(){
-            const urlDelete = `${urls.suspensoes}/${self.suspensao._id}`;
-            $http.delete(urlDelete, self.suspensao).then(function(response){
-                self.getSuspensoes();
-                msgs.msgSuccess('Suspensão de escala excluída com sucesso!');    
+        self.deleteEscala = function(){
+            const urlDelete = `${urls.escalas}/${self.escala._id}`;
+            $http.delete(urlDelete, self.escala).then(function(response){
+                self.getEscalas();
+                msgs.msgSuccess('Escala de Atendimento excluída com sucesso!');    
             }, function(response){
                 msgs.msgError(response.data.errors);
-                console.error('Erro ao excluir suspensão de escala: ', response.data);
+                console.error('Erro ao excluir escala de atendimento: ', response.data);
             });
         };
 
@@ -99,7 +99,15 @@
             $http.get(urls.profissionais+'?sort=nome').then(function(response){
                 console.log('Atualizando lista de profissionais ativos...');
                 self.profissionais = {};
-                self.profissionais = response.data;
+                // Filtro para profissionais somente com vínculo ativo
+                let profissionaisAtivos = response.data.filter(function(profissional){
+                    return !profissional.dtDemissao;
+                }, Object.create(null));
+                // Remove profissionais ativos e com mais de um vínculo 
+                self.profissionais = profissionaisAtivos.filter(function(profissional){
+                    console.log('Stringify: ', JSON.stringify(profissional));
+                    return !this[JSON.stringify(profissional.cpf)] && (this[JSON.stringify(profissional.cpf)] = true) && !profissional.dtDemissao;
+                }, Object.create(null));
                 console.log('Profissionais retornados para suspensão de escala : ' + self.profissionais.length);
             }, function(response){
                 console.log('Erro ao buscar profissionais: ',  response.data.errors);
@@ -108,33 +116,33 @@
 
         self.getOcupacoesByProfissional = function(profissional){
             if(profissional){
-                $http.get(urls.ocupacoes + `/?siglaUf=${self.estado.siglaUf}&sort=nome`).then(function(response){
-                    self.municipios = {};
-                    self.municipios = response.data;
-                    console.log('Municípios retornados: ', self.municipios.length);
+                $http.get(urls.ocupacoes + `/?_id=${profissional.ocupacao}&sort=nome`).then(function(response){
+                    self.ocupacoes = {};
+                    self.ocupacoes = response.data;
+                    console.log('Ocupações retornadas: ', self.ocupacoes.length);
                     }, function(response){
-                    console.error('Falha ao localizar MUNICÍPIOS: ', response.data);
+                    console.error('Falha ao localizar OCUPAÇÕES DO PROFISSIONAL: ', response.data);
                     });
             }else{
-                console.log('Nenhum estado selecionado');
+                console.log('Nenhum profissional selecionado');
             }
         };
 
-        self.setFieldsSuspensao = function(suspensao){
-            if(suspensao){
-                self.suspensao.dtInicio = new Date(self.suspensao.dtInicio);
-                self.suspensao.dtTermino = new Date(self.suspensao.dtTermino);
+        self.setFieldsEscala = function(escala){
+            if(escala){
+                self.escala.dtInicio = new Date(self.escala.dtInicio);
+                self.escala.dtTermino = new Date(self.escala.dtTermino);
 
-                self.getProfissionalById(suspensao);
+                self.getProfissionalById(escala);
                 
             }
         };
 
         // Busca profissional por _id
-        self.getProfissionalById = function(suspensao){
-            if(suspensao){
-                $http.get(urls.profissionais + '/' + suspensao.profissional).then(function(response){
-                    self.suspensao.profissional = response.data;
+        self.getProfissionalById = function(escala){
+            if(escala){
+                $http.get(urls.profissionais + '/' + escala.profissional).then(function(response){
+                    self.escala.profissional = response.data;
                     self.profissional = response.data;
                 }, function(response){
                     console.error('Falha ao recuperar profissional: ', response.data);
@@ -142,6 +150,10 @@
             }
         };
 
-        self.getSuspensoes();
+        self.calcHoraTermino = function(inicio, quantidade){
+            console.log('Calculando hora de término dos atendimentos: ', inicio, quantidade);
+        }
+
+        self.getEscalas();
     }]);
 })()

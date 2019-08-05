@@ -99,7 +99,15 @@
             $http.get(urls.profissionais+'?sort=nome').then(function(response){
                 console.log('Atualizando lista de profissionais ativos...');
                 self.profissionais = {};
-                self.profissionais = response.data;
+                // Filtro para profissionais somente com vínculo ativo
+                let profissionaisAtivos = response.data.filter(function(profissional){
+                    return !profissional.dtDemissao;
+                }, Object.create(null));
+                // Remove profissionais ativos e com mais de um vínculo 
+                self.profissionais = profissionaisAtivos.filter(function(profissional){
+                    console.log('Stringify: ', JSON.stringify(profissional));
+                    return !this[JSON.stringify(profissional.cpf)] && (this[JSON.stringify(profissional.cpf)] = true) && !profissional.dtDemissao;
+                }, Object.create(null));
                 console.log('Profissionais retornados para suspensão de escala : ' + self.profissionais.length);
             }, function(response){
                 console.log('Erro ao buscar profissionais: ',  response.data.errors);

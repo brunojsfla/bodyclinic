@@ -9,7 +9,7 @@ const escalaAtendimentoSchema = new mongoose.Schema({
                 enum : ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA',
                         'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO']}, 
     dtInicio: {type: Date, required : [true, 'Data de Início não informada']},
-    dtTermino: {type: Date, required : [true, 'Data de Término não informada']},
+    dtTermino: Date,
     horaInicio: {type: String, required : [true, 'Hora de Início não informada']},
     horaTermino: {type: String, required : [true, 'Hora de Término não informada']},
     qtdAtendimentos: Number,

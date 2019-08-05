@@ -11,6 +11,11 @@
         </thead>
         <tbody>
             <tr ng-repeat="escala in eaCtrl.escalas">
+                <td>{{ escala.profissional.nome }}</td>
+                <td>{{ escala.ocupacao }}</td>
+                <td>{{ escala.diaSemana }}</td>                
+                <td>{{ escala.horaInicio }}</td>
+                <td>{{ escala.horaTermino }}</td>
                 <td class="table-actions">
                     <button class="btn btn-warning" ng-click="sCtrl.showUpdate(suspensao)"><i class="fa fa-pencil"></i></button>
                     <button class="btn btn-danger" ng-click="sCtrl.showRemove(suspensao)"><i class="fa fa-trash-o"></i></button>
