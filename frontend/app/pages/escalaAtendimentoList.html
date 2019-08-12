@@ -5,20 +5,20 @@
                 <th>Profissional</th>
                 <th>Ocupação</th>
                 <th>Dia da semana</th>
-                <th>Início</th>
-                <th>Término</th>
+                <th>Hora Início</th>
+                <th>Hora Término</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="escala in eaCtrl.escalas">
                 <td>{{ escala.profissional.nome }}</td>
-                <td>{{ escala.ocupacao }}</td>
+                <td>{{ escala.ocupacao.nome }}</td>
                 <td>{{ escala.diaSemana }}</td>                
-                <td>{{ escala.horaInicio }}</td>
-                <td>{{ escala.horaTermino }}</td>
+                <td>{{ escala.horaInicio | hora }}</td>
+                <td>{{ escala.horaTermino | hora }}</td>
                 <td class="table-actions">
-                    <button class="btn btn-warning" ng-click="sCtrl.showUpdate(suspensao)"><i class="fa fa-pencil"></i></button>
-                    <button class="btn btn-danger" ng-click="sCtrl.showRemove(suspensao)"><i class="fa fa-trash-o"></i></button>
+                    <button class="btn btn-warning" ng-click="eaCtrl.showUpdate(escala)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="eaCtrl.showRemove(escala)"><i class="fa fa-trash-o"></i></button>
                 </td>
             </tr>
         </tbody>  

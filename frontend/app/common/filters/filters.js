@@ -14,4 +14,9 @@
             return '(' + value.substr(0, 2) + ')' + value.substr(2, 4) + '-' + value.substr(6, 4);
         }
     });
+    app.filter('hora', function(){
+        return function(value){
+            return value.substr(0, 2) + ':' + value.substr(2, 2);
+        }
+    });
 })();

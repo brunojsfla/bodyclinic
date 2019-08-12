@@ -7,21 +7,16 @@
 
         self.saveEscala = function(){
             // Validações 
-            let dtInicio = new Date(self.escala.dtInicio);
-            let dtTermino = new Date(self.escala.dtTermino);
-            console.log('Data: ', dtInicio);
-            //data de término ser maior que data de início
-            if(dtTermino < dtInicio){
-                msgs.msgError('Data de término anterior a Data de Início.');
-                return;
-            }
+            let horaInicio = parseInt(self.escala.horaInicio.substr(0, 2));
+            let diaSemana = self.escala.diaSemana;
 
             //Escala para o mesmo período e mesmo profissional
             for(let i = 0; i < self.escalas.length; i++){
-                let dtInicioAux = new Date(self.escalas[i].dtInicio);
-                let dtTerminoAux = new Date(self.escalas[i].dtTermino);
+                let diaSemanaAux = self.escalas[i].diaSemana;
+                let horaInicioAux = parseInt(self.escalas[i].horaInicio.substr(0,2));
+                let horaTerminoAux = parseInt(self.escalas[i].horaTermino.substr(0,2));
                 if(self.escala.profissional._id === self.escalas[i].profissional._id){
-                    if(dtInicio >= dtInicioAux && dtInicio <= dtTerminoAux){
+                    if(diaSemana === diaSemanaAux && (horaInicio >= horaInicioAux && horaInicio <= horaTerminoAux)){
                         msgs.msgError(`O profissional ${self.escalas[i].profissional.nome} já possui uma escala de atendimento para o período informado.`);
                         return;
                     }
@@ -43,6 +38,7 @@
                 self.escala = {};
                 let escalasAux = response.data; 
                 for(let i = 0; i < escalasAux.length; i++){
+                    //Profissional
                     $http.get(urls.profissionais + '/' + escalasAux[i].profissional).then(function(response){
                         for(let j = 0; j < escalasAux.length; j++){
                             if(response.data._id === escalasAux[j].profissional)
@@ -50,6 +46,16 @@
                         }
                     }, function(response){
                         console.error('Falha ao recuperar profissional para lista de escalas: ', response.data);
+                    });
+
+                    //Ocupação
+                    $http.get(urls.ocupacoes + '/' + escalasAux[i].ocupacao).then(function(response){
+                        for(let j = 0; j < escalasAux.length; j++){
+                            if(response.data._id === escalasAux[j].ocupacao)
+                                escalasAux[j].ocupacao = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar ocupação para lista de escalas: ', response.data);
                     });
                 }
                 self.escalas = escalasAux;
@@ -130,28 +136,50 @@
 
         self.setFieldsEscala = function(escala){
             if(escala){
-                self.escala.dtInicio = new Date(self.escala.dtInicio);
-                self.escala.dtTermino = new Date(self.escala.dtTermino);
-
                 self.getProfissionalById(escala);
-                
+                self.getOcupacaoById(escala);                              
             }
         };
 
         // Busca profissional por _id
         self.getProfissionalById = function(escala){
             if(escala){
-                $http.get(urls.profissionais + '/' + escala.profissional).then(function(response){
+                $http.get(urls.profissionais + '/' + escala.profissional._id).then(function(response){
                     self.escala.profissional = response.data;
-                    self.profissional = response.data;
                 }, function(response){
-                    console.error('Falha ao recuperar profissional: ', response.data);
+                    console.error('Falha ao recuperar profissional para edição e exclusão: ', response.data);
+                });
+            }
+        };
+
+        // Busca ocupação por _id
+        self.getOcupacaoById = function(escala){
+            if(escala){
+                $http.get(urls.ocupacoes + '/' + escala.ocupacao._id).then(function(response){
+                    self.getOcupacoesByProfissional(self.escala.profissional);
+                    self.escala.ocupacao = response.data;
+                    console.log('ESCALA:', self.escala);
+                }, function(response){
+                    console.error('Falha ao recuperar ocupação para edição e exclusão: ', response.data);
                 });
             }
         };
 
         self.calcHoraTermino = function(inicio, quantidade){
-            console.log('Calculando hora de término dos atendimentos: ', inicio, quantidade);
+            if(inicio&&quantidade){
+                console.log('Calculando hora de término dos atendimentos...');
+                self.escala.horaTermino = "";
+                let horaInicio = parseInt(inicio.substr(0, 2));
+                let horaTermino = horaInicio + quantidade;
+                let strHoraTermino = "";
+                if(horaTermino < 10)
+                    strHoraTermino = '0'+horaTermino+inicio.substr(2, 2);
+                else
+                    strHoraTermino = horaTermino+inicio.substr(2, 2);
+
+                self.escala.horaTermino = strHoraTermino;
+            }/*else
+                msgs.msgWarning('Informe a hora de início e quantidade de atendimentos da escala para calculo do término');*/
         }
 
         self.getEscalas();
