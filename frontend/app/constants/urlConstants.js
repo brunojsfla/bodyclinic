@@ -1,13 +1,14 @@
 (function(){
     app.constant('urls', {
-        usuarios: 'http://localhost:3003/apibc/usuarios',
-        estados: 'http://localhost:3003/apibc/estados',
-        municipios: 'http://localhost:3003/apibc/municipios',
-        ocupacoes: 'http://localhost:3003/apibc/ocupacoes',
-        procedimentos: 'http://localhost:3003/apibc/procedimentos',
-        pacientes: 'http://localhost:3003/apibc/pacientes',
-        profissionais: 'http://localhost:3003/apibc/profissionais',
-        suspensoes: 'http://localhost:3003/apibc/suspensoes',
-        escalas: 'http://localhost:3003/apibc/escalas'
+        usuarios: 'http://localhost:3005/apibc/usuarios',
+        estados: 'http://localhost:3005/apibc/estados',
+        municipios: 'http://localhost:3005/apibc/municipios',
+        ocupacoes: 'http://localhost:3005/apibc/ocupacoes',
+        procedimentos: 'http://localhost:3005/apibc/procedimentos',
+        pacientes: 'http://localhost:3005/apibc/pacientes',
+        profissionais: 'http://localhost:3005/apibc/profissionais',
+        suspensoes: 'http://localhost:3005/apibc/suspensoes',
+        escalas: 'http://localhost:3005/apibc/escalas',
+        medicamentos: 'http://localhost:3005/apibc/medicamentos'
     });
 })()

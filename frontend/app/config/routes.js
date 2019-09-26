@@ -25,6 +25,9 @@
             }).state('usuario', {
                 url: "/usuario",
                 templateUrl: "pages/usuario.html"
+            }).state('medicamento', {
+                url: "/medicamento",
+                templateUrl: "pages/medicamento.html"
             });
 
             $urlRouterProvider.otherwise('/home');

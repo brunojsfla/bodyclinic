@@ -39,4 +39,8 @@ module.exports = function(server){
     //Rota Escala de Atendimento
     const escalaAtendimentoService = require('../api/services/escalaAtendimentoService');
     escalaAtendimentoService.register(rt, '/escalas');
+
+     //Rota Medicamento
+    const medicamentoService = require('../api/services/medicamentoService');
+    medicamentoService.register(rt, '/medicamentos');
 };
