@@ -1,0 +1,22 @@
+<div class="box body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data de Atendimento</th>
+                <th>Paciente</th>
+                <th>Profissional</th>
+                <th>Ocupação</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="atendimento in aCtrl.atendimentos">
+                <td>{{ atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</td>
+                <td class="table-actions">
+                    <button class="btn btn-warning" ng-click="aCtrl.showUpdate(atendimento)"><i class="fa fa-pencil"></i></button>
+                    <button class="btn btn-danger" ng-click="aCtrl.showRemove(atendimento)"><i class="fa fa-trash-o"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

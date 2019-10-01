@@ -1,0 +1,308 @@
+<headerform-component text="Cadastro de atendimento"></headerform-component>
+<div class="form" role="form">
+    <div class="box-body">
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Data de Atendimento</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtAtendimento" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.dtAtendimento">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-5">
+            <div class="form-group">
+                <label>Profissional</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-user-md"></i>
+                    </div>
+                    <select class="form-control" name="profissional" id="profissional" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.profissional" 
+                        ng-options="s.nome for s in aCtrl.profissionais track by s._id" ng-change="aCtrl.getOcupacoesByProfissional(aCtrl.atendimento.profissional)"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <div class="form-group">
+                <label>Ocupação</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-graduation-cap"></i>
+                    </div>
+                    <select class="form-control" name="ocupacao" id="ocupacao" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.ocupacao" 
+                        ng-options="o.nome for o in aCtrl.ocupacoes track by o._id"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Paciente</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <select class="form-control" name="paciente" id="paciente" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.paciente" 
+                        ng-options="p.nome for p in aCtrl.pacientes track by p._id" ng-change="aCtrl.getFieldsByPaciente(aCtrl.atendimento.paciente)"></select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Data de Nascimento</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtNasc" ng-disabled="true" ng-model="aCtrl.atendimento.paciente.dtNasc">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Sexo</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-venus-mars"></i>
+                        </div>
+                    <input type="text" class="form-control" name="pacienteSexo" ng-disabled="true" id="pacienteSexo" ng-model="aCtrl.atendimento.paciente.sexo"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label>Descrição | Motivo | Queixa do paciente</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-commenting-o"></i>
+                        </div>
+                    <input type="text" class="form-control" name="descQueixa" ng-disabled="aCtrl.tabDelete" id="descQueixa" ng-model="aCtrl.atendimento.descQueixa"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label>Descrição | Exame Físico</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
+                    <input type="text" class="form-control" name="descObjetivo" ng-disabled="aCtrl.tabDelete" id="descObjetivo" ng-model="aCtrl.atendimento.descObjetivo"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Temperatura(°C)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-fire"></i>
+                        </div>
+                    <input type="text" class="form-control" name="temperatura" ng-disabled="aCtrl.tabDelete" id="temperatura" ng-model="aCtrl.atendimento.temperatura"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Saturação Oxigênio(%)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-fire-extinguisher"></i>
+                        </div>
+                    <input type="text" class="form-control" name="saturacao" ng-disabled="aCtrl.tabDelete" id="saturacao" ng-model="aCtrl.atendimento.saturacao"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Frequência Respiratória(mpm)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-spinner"></i>
+                        </div>
+                    <input type="text" class="form-control" name="freqRespiratoria" ng-disabled="aCtrl.tabDelete" id="freqRespiratoria" ng-model="aCtrl.atendimento.freqRespiratoria"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Frequência Cardíaca(bpm)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-heart-o"></i>
+                        </div>
+                    <input type="text" class="form-control" name="freqCardiaca" ng-disabled="aCtrl.tabDelete" id="freqCardiaca" ng-model="aCtrl.atendimento.freqCardiaca"></input>
+                </div>
+            </div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Pressão Arterial</h4>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Sistólica(mmHg)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-heartbeat"></i>
+                        </div>
+                    <input type="text" class="form-control" name="pressaoSistolica" ng-disabled="aCtrl.tabDelete" id="pressaoSistolica" ng-model="aCtrl.atendimento.pressaoSistolica"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Diastólica(mmHg)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-heartbeat"></i>
+                        </div>
+                    <input type="text" class="form-control" name="pressaoDistolica" ng-disabled="aCtrl.tabDelete" id="pressaoDistolica" ng-model="aCtrl.atendimento.pressaoDistolica"></input>
+                </div>
+            </div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Antropometria</h4>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Peso(Kg)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-balance-scale"></i>
+                        </div>
+                    <input type="text" class="form-control" name="peso" ng-disabled="aCtrl.tabDelete" id="peso" ng-model="aCtrl.atendimento.peso"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Altura(cm)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-sort-numeric-asc"></i>
+                        </div>
+                    <input type="text" class="form-control" name="altura" ng-disabled="aCtrl.tabDelete" id="altura" ng-model="aCtrl.atendimento.altura"
+                    ng-change="aCtrl.calcImc(aCtrl.atendimento.peso, aCtrl.atendimento.altura)"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>Perímetro Cefálico(cm)</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-circle-o-notch"></i>
+                        </div>
+                    <input type="text" class="form-control" name="perimetroCefalico" ng-disabled="aCtrl.tabDelete" id="perimetroCefalico" ng-model="aCtrl.atendimento.perimetroCefalico"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
+                <label>IMC</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-asterisk"></i>
+                        </div>
+                    <input type="text" class="form-control" name="imc" ng-disabled="true" id="imc" ng-model="aCtrl.imc"></input>
+                </div>
+            </div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Avaliação de Exames</h4>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div ng-include="'pages/examesAvaliadosList.html'"></div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label>Observações dos Exames Avaliados</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <input type="text" class="form-control" name="notaExameAvaliado" ng-disabled="aCtrl.tabDelete" id="notaExameAvaliado" ng-model="aCtrl.atendimento.notaExameAvaliado"></input>
+                </div>
+            </div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Solicitação de Exames</h4>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div ng-include="'pages/examesSolicitadosList.html'"></div>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label>Observações dos Exames Solicitados</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <input type="text" class="form-control" name="notaExameSolicitado" ng-disabled="aCtrl.tabDelete" id="notaExameSolicitado" ng-model="aCtrl.atendimento.notaExameSolicitado"></input>
+                </div>
+            </div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Receituário</h4>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div ng-include="'pages/prescricoesList.html'"></div>
+        </div>
+        <div class="box-header with-border"> 
+            <h4 class="box-title">Desfecho</h4>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="form-group">
+                <label>Diagnóstico</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <input type="text" class="form-control" name="descDiagnostico" ng-disabled="aCtrl.tabDelete" id="descDiagnostico" ng-model="aCtrl.atendimento.descDiagnostico"></input>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <div class="form-group">
+                <label>Data de Saída</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtSaida" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.dtSaida">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <div class="form-group">
+                <label>Retorno</label>
+                <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-undo"></i>
+                        </div>
+                    <select class="form-control" name="retorno" ng-disabled="aCtrl.tabDelete" id="retorno" ng-model="aCtrl.atendimento.retorno">
+                        <option ng-repeat="questaoBinaria in aCtrl.questaoBinaria">{{ questaoBinaria.nome }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            <div class="form-group">
+                <label>Data de Retorno</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtRetorno" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.dtRetorno">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer">
+        <button type="button" class="btn btn-primary" ng-if="aCtrl.tabCreate" ng-click="aCtrl.savePaciente()">Salvar</button>
+        <button type="button" class="btn btn-info" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.setPaciente()">Atualizar</button>
+        <button type="button" class="btn btn-danger" ng-if="aCtrl.tabDelete" ng-click="aCtrl.deletePaciente()">Excluir</button>
+        <button type="button" class="btn btn-default" ng-click="aCtrl.getPacientes()">Cancelar</button>
+    </div>
+</div>

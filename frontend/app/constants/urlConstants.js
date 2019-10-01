@@ -9,6 +9,7 @@
         profissionais: 'http://localhost:3005/apibc/profissionais',
         suspensoes: 'http://localhost:3005/apibc/suspensoes',
         escalas: 'http://localhost:3005/apibc/escalas',
-        medicamentos: 'http://localhost:3005/apibc/medicamentos'
+        medicamentos: 'http://localhost:3005/apibc/medicamentos',
+        atendimentos: 'http://localhost:3005/apibc/atendimentos'
     });
 })()

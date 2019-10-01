@@ -1,0 +1,46 @@
+<div class="col-xs-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Data do Resultado</td>
+                <td>Resultado</td>
+                <td>Exame</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="exameAval in aCtrl.atendimento.examesAvaliados">
+                <td>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="date" class="form-control" id="dtResultado" ng-disabled="aCtrl.tabDelete" ng-model="exameAval.dtResultado">
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-venus-mars"></i>
+                        </div>
+                        <select class="form-control" name="resultado" ng-disabled="aCtrl.tabDelete" id="resultado" ng-model="exameAval.resultado">
+                            <option ng-repeat="resultado in aCtrl.resultado">{{ resultado.nome }}</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-user-md"></i>
+                        </div>
+                        <select class="form-control" name="exameAvaliado" id="exameAvaliado" ng-disabled="aCtrl.tabDelete" ng-model="exameAval.procedimento"></select>
+                    </div>
+                </td>
+                <td class="table-actions">
+                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-warning" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-clone"></button>
+                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-trash-o"></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

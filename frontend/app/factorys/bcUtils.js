@@ -103,6 +103,24 @@
             return diasSemana;
         };
 
-        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana };
+        function getQuestaoBinaria(){
+            let sexo = [];
+
+            sexo.push({valor: 0, nome: 'SIM'});
+            sexo.push({valor: 1, nome: 'NÃO'});
+
+            return sexo;
+        };
+
+        function getTipoResultadoExame(){
+            let resultado = [];
+
+            resultado.push({valor: 0, nome: 'NORMAL'});
+            resultado.push({valor: 1, nome: 'ALTERADO'});
+
+            return resultado;
+        };
+
+        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana, getQuestaoBinaria, getTipoResultadoExame };
     }]);
 })();

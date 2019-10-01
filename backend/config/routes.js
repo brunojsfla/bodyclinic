@@ -43,4 +43,8 @@ module.exports = function(server){
      //Rota Medicamento
     const medicamentoService = require('../api/services/medicamentoService');
     medicamentoService.register(rt, '/medicamentos');
+
+    //Rota Atendimento
+    const atendimentoService = require('../api/services/atendimentoService');
+    atendimentoService.register(rt, '/atendimentos');
 };
