@@ -1,9 +1,9 @@
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12">
     <table class="table">
         <thead>
             <tr>
-                <td>Medicamento</td>
-                <td>Instruções</td>
+                <th>Medicamento</th>
+                <th>Instruções | Posologia</th>
             </tr>
         </thead>
         <tbody>
@@ -11,25 +11,23 @@
                 <td>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-user-md"></i>
+                            <i class="fa fa-eyedropper"></i>
                         </div>
                         <select class="form-control" name="medicamento" id="medicamento" ng-disabled="aCtrl.tabDelete" ng-model="receituario.medicamento"
-                            ng-options="m.nomeGenerico for m in aCtrl.medicamentos track by m._id"></select>
+                            ng-options="m.nomeGenerico for m in aCtrl.medicamentos track by m._id" ng-change="aCtrl.removeDuplicateObjects($index, 'receituario', receituario)"></select>
                     </div>
                 </td>
                 <td>
                     <div class="input-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-list"></i>
-                            </div>
-                            <input type="text" class="form-control" name="notaReceituario" ng-disabled="aCtrl.tabDelete" id="notaReceituario" ng-model="receituario.instrucoes"></input>
+                        <div class="input-group-addon">
+                            <i class="fa fa-list"></i>
                         </div>
+                        <input type="text" class="form-control" name="notareceituario" ng-disabled="aCtrl.tabDelete" id="notareceituario" ng-model="receituario.instrucoes"/>
                     </div>
                 </td>
                 <td class="table-actions">
-                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-plus"></i></button>
-                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-trash-o"></button>
+                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.addObject($index, 'receituario')"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.removeObject($index, 'receituario')"><i class="fa fa-trash-o"></i></button>
                 </td>
             </tr>
         </tbody>

@@ -2,7 +2,7 @@
     <table class="table">
         <thead>
             <tr>
-                <td>Exame</td>
+                <th>Exame</th>
             </tr>
         </thead>
         <tbody>
@@ -10,15 +10,15 @@
                 <td>
                     <div class="input-group">
                         <div class="input-group-addon">
-                            <i class="fa fa-user-md"></i>
+                            <i class="fa fa-newspaper-o"></i>
                         </div>
-                        <select class="form-control" name="exameSolicitado" id="exameSolicitado" ng-disabled="aCtrl.tabDelete" ng-model="exameSol.procedimento"></select>
+                        <select class="form-control" name="examesolicitado" id="examesolicitado" ng-disabled="aCtrl.tabDelete" ng-model="exameSol.procedimento"
+                            ng-options="p.nome for p in aCtrl.procedimentos track by p._id" ng-change="aCtrl.removeDuplicateObjects($index, 'exameSol', exameSol)"></select>
                     </div>
                 </td>
                 <td class="table-actions">
-                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-plus"></i></button>
-                    <button class="btn btn-warning" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-clone"></button>
-                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}"><i class="fa fa-trash-o"></button>
+                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.addObject($index, 'exameSol')"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.removeObject($index, 'exameSol')"><i class="fa fa-trash-o"></i></button>
                 </td>
             </tr>
         </tbody>

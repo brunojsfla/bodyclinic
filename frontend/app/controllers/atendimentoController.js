@@ -27,6 +27,7 @@
                 self.getProfissionais();
                 self.getPacientes();
                 self.getMedicamentos();
+                self.getProcedimentos();
                 console.log('Atendimentos retornados : ' + self.atendimentos.length);
             }, function(response){
                 console.log('Erro ao buscar atendimentos: ',  response.data.errors);
@@ -159,6 +160,18 @@
             });
         };
 
+        self.removeDuplicateMedicamento = function(index, receituario){
+            if(self.atendimento.receituario.length > 1){
+                for(var i = 0; i < index; i++){
+                    if(self.atendimento.receituario[i].medicamento._id === receituario.medicamento._id){
+                        msgs.msgError('O medicamento informado já consta no receituário!');
+                        self.atendimento.receituario.splice(index, 1);
+                        return;
+                    }
+                }
+            }
+        };
+
         self.calcImc = function(peso, altura){
             if(peso && altura){
                 console.log('Calculando IMC...');
@@ -183,6 +196,126 @@
                 console.log('IMC calculado com sucesso!', self.imc);
             }else
                 self.imc = 0;
+        };
+
+        // Retorna procedimentos
+        self.getProcedimentos = function(){
+            $http.get(urls.procedimentos+'?sort=nome').then(function(response){
+                console.log('Atualizando lista de procedimentos...', response);
+                self.procedimentos = {};
+                self.procedimentos = response.data;
+                console.log('Procedimentos retornados: ' + self.procedimentos.length);
+            }, function(response){
+                console.log('Erro ao buscar procedimentos: ',  response.data.errors);
+            });
+        };
+
+        self.removeDuplicateExameSolicitado = function(index, exame){
+            if(self.atendimento.examesSolicitados.length > 1){
+                for(var i = 0; i < index; i++){
+                    if(self.atendimento.examesSolicitados[i].procedimento._id === exame.procedimento._id){
+                        msgs.msgError('O exame informado já consta para solicitação!');
+                        self.atendimento.examesSolicitados.splice(index, 1);
+                        return;
+                    }
+                }
+            }
+        };
+
+         self.removeDuplicateObjects = function(index, obj, item){
+            switch(obj){
+                case 'receituario':
+                    if(self.atendimento.receituario.length > 1){
+                        for(var i = 0; i < index; i++){
+                            if(self.atendimento.receituario[i].medicamento._id === item.medicamento._id){
+                                msgs.msgError('O medicamento informado já consta no receituário!');
+                                self.atendimento.receituario.splice(index, 1);
+                                return;
+                            }
+                        }
+                    }
+                    break;
+                case 'exameSol':
+                    if(self.atendimento.examesSolicitados.length > 1){
+                        for(var i = 0; i < index; i++){
+                            if(self.atendimento.examesSolicitados[i].procedimento._id === item.procedimento._id){
+                                msgs.msgError('O exame informado já consta para solicitação!');
+                                self.atendimento.examesSolicitados.splice(index, 1);
+                                return;
+                            }
+                        }
+                    }
+                    break;
+                case 'exameAval':
+                    if(self.atendimento.examesAvaliados.length > 1){
+                        for(var i = 0; i < index; i++){
+                            if(self.atendimento.examesAvaliados[i].procedimento._id === item.procedimento._id){
+                                msgs.msgError('O exame informado já consta para avaliação!');
+                                self.atendimento.examesAvaliados.splice(index, 1);
+                                return;
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    return;
+            }
+            
+            
+        };
+
+        self.addObject = function(index, obj){
+            switch(obj){
+                case 'receituario':
+                    self.atendimento.receituario.splice(index + 1, 0, {});
+                    break;
+                case 'exameSol':
+                    self.atendimento.examesSolicitados.splice(index + 1, 0, {});
+                    break;
+                case 'exameAval':
+                    self.atendimento.examesAvaliados.splice(index + 1, 0, {});
+                    break;
+                default:
+                    return;
+            }
+            
+        };
+
+        self.removeObject = function(index, obj){
+            switch(obj){
+                case 'receituario':
+                    if(self.atendimento.receituario.length > 1)
+                        self.atendimento.receituario.splice(index, 1);
+                    break;
+                case 'exameSol':
+                    if(self.atendimento.examesSolicitados.length > 1)
+                        self.atendimento.examesSolicitados.splice(index, 1);
+                    break;
+                case 'exameAval':
+                    if(self.atendimento.examesAvaliados.length > 1)
+                        self.atendimento.examesAvaliados.splice(index, 1);
+                    break;
+                default:
+                    return;
+            }
+            
+        };
+
+        self.clearObjects = function(obj){
+            switch(obj){
+                case 'receituario':
+                    self.atendimento.receituario = [{}];
+                    break;
+                case 'exameSol':
+                    self.atendimento.examesSolicitados = [{}];
+                    break;
+                case 'exameAval':
+                    self.atendimento.examesAvaliados = [{}];
+                    break;
+                default:
+                    return;
+            }
+        
         };
 
         self.getAtendimentos();
