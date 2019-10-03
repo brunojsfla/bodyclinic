@@ -12,7 +12,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-newspaper-o"></i>
                         </div>
-                        <select class="form-control" name="examesolicitado" id="examesolicitado" ng-disabled="aCtrl.tabDelete" ng-model="exameSol.procedimento"
+                        <select class="form-control" name="examesolicitado" id="examesolicitado" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="exameSol.procedimento"
                             ng-options="p.nome for p in aCtrl.procedimentos track by p._id" ng-change="aCtrl.removeDuplicateObjects($index, 'exameSol', exameSol)"></select>
                     </div>
                 </td>

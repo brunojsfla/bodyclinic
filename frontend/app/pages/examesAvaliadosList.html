@@ -14,7 +14,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-newspaper-o"></i>
                         </div>
-                        <select class="form-control" name="exameavaliado" id="exameavaliado" ng-disabled="aCtrl.tabDelete" ng-model="exameAval.procedimento"
+                        <select class="form-control" name="exameavaliado" id="exameavaliado" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="exameAval.procedimento"
                             ng-options="p.nome for p in aCtrl.procedimentos track by p._id" ng-change="aCtrl.removeDuplicateObjects($index, 'exameAval', exameAval)"></select>
                     </div>
                 </td>
@@ -23,7 +23,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="date" class="form-control" id="dtResultado" ng-disabled="aCtrl.tabDelete" ng-model="exameAval.dtResultado"/>
+                        <input type="date" class="form-control" id="dtResultado" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="exameAval.dtResultado"/>
                     </div>
                 </td>
                 <td>
@@ -31,7 +31,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-check-square-o"></i>
                         </div>
-                        <select class="form-control" name="resultado" ng-disabled="aCtrl.tabDelete" id="resultado" ng-model="exameAval.resultado">
+                        <select class="form-control" name="resultado" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" id="resultado" ng-model="exameAval.resultado">
                             <option ng-repeat="resultado in aCtrl.resultado">{{ resultado.nome }}</option>
                         </select>
                     </div>

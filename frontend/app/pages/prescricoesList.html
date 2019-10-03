@@ -13,7 +13,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-eyedropper"></i>
                         </div>
-                        <select class="form-control" name="medicamento" id="medicamento" ng-disabled="aCtrl.tabDelete" ng-model="receituario.medicamento"
+                        <select class="form-control" name="medicamento" id="medicamento" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="receituario.medicamento"
                             ng-options="m.nomeGenerico for m in aCtrl.medicamentos track by m._id" ng-change="aCtrl.removeDuplicateObjects($index, 'receituario', receituario)"></select>
                     </div>
                 </td>
@@ -22,7 +22,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-list"></i>
                         </div>
-                        <input type="text" class="form-control" name="notareceituario" ng-disabled="aCtrl.tabDelete" id="notareceituario" ng-model="receituario.instrucoes"/>
+                        <input type="text" class="form-control" name="notareceituario" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" id="notareceituario" ng-model="receituario.instrucoes"/>
                     </div>
                 </td>
                 <td class="table-actions">

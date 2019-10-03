@@ -12,9 +12,13 @@
         <tbody>
             <tr ng-repeat="atendimento in aCtrl.atendimentos">
                 <td>{{ atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</td>
+                <td>{{ atendimento.paciente.nome }}</td>
+                <td>{{ atendimento.profissional.nome }}</td>
+                <td>{{ atendimento.ocupacao.nome }}</td>
+                <td>{{ atendimento.estado }}</td>
                 <td class="table-actions">
-                    <button class="btn btn-warning" ng-click="aCtrl.showUpdate(atendimento)"><i class="fa fa-pencil"></i></button>
-                    <button class="btn btn-danger" ng-click="aCtrl.showRemove(atendimento)"><i class="fa fa-trash-o"></i></button>
+                    <button class="btn btn-default" ng-click="aCtrl.showView(atendimento)"><i class="fa fa-eye"></i></button>
+                    <button class="btn btn-danger" ng-click="aCtrl.showCancel(atendimento)" ng-if="atendimento.estado == 'CONCLUÍDO'"><i class="fa fa-pause"></i></button>
                 </td>
             </tr>
         </tbody>

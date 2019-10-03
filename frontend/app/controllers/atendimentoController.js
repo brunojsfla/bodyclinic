@@ -7,6 +7,7 @@
         self.resultado = bcUtils.getTipoResultadoExame();
 
         self.saveAtendimento = function(){
+            self.atendimento.estado = 'CONCLUÍDO';
             $http.post(urls.atendimentos, self.atendimento).then(function(response){
                 self.getAtendimentos();
                 msgs.msgSuccess('Atendimento salvo com sucesso!');
@@ -17,10 +18,42 @@
         };
 
         self.getAtendimentos = function(){
-            $http.get(urls.atendimentos).then(function(response){
+            $http.get(urls.atendimentos+'?sort=dtAtendimento').then(function(response){
                 console.log('Atualizando lista de atendimentos...');
                 self.atendimento = {examesAvaliados: [{}], examesSolicitados: [{}], receituario: [{}]};
-                self.atendimentos = response.data;
+                let atendimentoAux = response.data; 
+                for(let i = 0; i < atendimentoAux.length; i++){
+                    //Paciente
+                    $http.get(urls.pacientes + '/' + atendimentoAux[i].paciente).then(function(response){
+                        for(let j = 0; j < atendimentoAux.length; j++){
+                            if(response.data._id === atendimentoAux[j].paciente)
+                                atendimentoAux[j].paciente = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar paciente para lista de atendimento: ', response.data);
+                    });
+
+                    //Profissional
+                    $http.get(urls.profissionais + '/' + atendimentoAux[i].profissional).then(function(response){
+                        for(let j = 0; j < atendimentoAux.length; j++){
+                            if(response.data._id === atendimentoAux[j].profissional)
+                                atendimentoAux[j].profissional = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar profissional para lista de atendimento: ', response.data);
+                    });
+
+                    //Ocupação
+                    $http.get(urls.ocupacoes + '/' + atendimentoAux[i].ocupacao).then(function(response){
+                        for(let j = 0; j < atendimentoAux.length; j++){
+                            if(response.data._id === atendimentoAux[j].ocupacao)
+                                atendimentoAux[j].ocupacao = response.data;
+                        }
+                    }, function(response){
+                        console.error('Falha ao recuperar ocupação para lista de atendimento: ', response.data);
+                    });
+                }
+                self.atendimentos = atendimentoAux;
                 tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
                 self.atendimento.dtAtendimento = new Date();
                 //Inicalização dos objetos necessários
@@ -34,35 +67,50 @@
             });
         };
 
-        self.showUpdate = function(atendimento){
+        self.showView = function(atendimento){
             self.atendimento = atendimento;
-            tabsFactory.showTabs(self, {tabUpdate: true});
+            self.setFieldsAtendimento(atendimento);
+            tabsFactory.showTabs(self, {tabDelete: true});
         };
 
-        self.showRemove = function(atendimento){
+        self.showCancel = function(atendimento){
             self.atendimento = atendimento;
-            tabsFactory.showTabs(self, {tabDelete: true});
+            self.setFieldsAtendimento(atendimento);
+            tabsFactory.showTabs(self, {tabUpdate: true});
         }
 
-        self.setAtendimento = function(){
+        self.setFieldsAtendimento = function(atendimento){
+            if(atendimento){
+                // Seta Datas
+                self.atendimento.dtAtendimento = new Date(atendimento.dtAtendimento);
+                if(atendimento.dtCancelamento)
+                    self.atendimento.dtCancelamento = new Date(atendimento.dtCancelamento);
+                self.atendimento.dtSaida = new Date(atendimento.dtSaida);
+                if(atendimento.dtRetorno)
+                    self.atendimento.dtRetorno = new Date(atendimento.dtRetorno);
+                // Seta Objetos
+                self.getProfissionalById(atendimento);
+                self.getOcupacaoById(atendimento);
+                self.getPacienteById(atendimento);
+                self.calcImc(atendimento.peso, atendimento.altura);
+                self.getExameAvaliadoById(atendimento);
+                self.getExameSolicitadoById(atendimento);
+                self.getMedicamentoById(atendimento);
+                
+            }else{
+                console.log('Nenhum atendimento selecionado');
+            }
+        };
+
+        self.cancelAtendimento = function(){
+            self.atendimento.estado = 'CANCELADO';
             const urlUpdate = `${urls.atendimentos}/${self.atendimento._id}`;
             $http.put(urlUpdate, self.atendimento).then(function(response){
                 self.getAtendimentos();
-                msgs.msgSuccess('Atendimento alterado com sucesso!');    
+                msgs.msgSuccess('Atendimento cancelado com sucesso!');    
             }, function(response){
                 msgs.msgError(response.data.errors);
-                console.error('Erro ao alterar atendimento: ', response.data);
-            });
-        };
-
-        self.deleteAtendimento = function(){
-            const urlDelete = `${urls.atendimentos}/${self.atendimento._id}`;
-            $http.delete(urlDelete, self.atendimento).then(function(response){
-                self.getAtendimentos();
-                msgs.msgSuccess('Atendimento excluído com sucesso!');    
-            }, function(response){
-                msgs.msgError(response.data.errors);
-                console.error('Erro ao excluir atendimento: ', response.data);
+                console.error('Erro ao cancelar atendimento: ', response.data);
             });
         };
 
@@ -100,26 +148,77 @@
         };
 
         // Busca profissional por _id
-        self.getProfissionalById = function(escala){
-            if(escala){
-                $http.get(urls.profissionais + '/' + escala.profissional._id).then(function(response){
-                    self.escala.profissional = response.data;
+        self.getProfissionalById = function(atendimento){
+            if(atendimento){
+                $http.get(urls.profissionais + '/' + atendimento.profissional).then(function(response){
+                    self.atendimento.profissional = response.data;
                 }, function(response){
-                    console.error('Falha ao recuperar profissional para edição e exclusão: ', response.data);
+                    console.error('Falha ao recuperar profissional para visualização e cancelamento: ', response.data);
                 });
             }
         };
 
         // Busca ocupação por _id
-        self.getOcupacaoById = function(escala){
-            if(escala){
-                $http.get(urls.ocupacoes + '/' + escala.ocupacao._id).then(function(response){
-                    self.getOcupacoesByProfissional(self.escala.profissional);
-                    self.escala.ocupacao = response.data;
-                    console.log('ESCALA:', self.escala);
+        self.getOcupacaoById = function(atendimento){
+            if(atendimento){
+                $http.get(urls.ocupacoes + '/' + atendimento.ocupacao).then(function(response){
+                    self.getOcupacoesByProfissional(self.atendimento.profissional);
+                    self.atendimento.ocupacao = response.data;
                 }, function(response){
-                    console.error('Falha ao recuperar ocupação para edição e exclusão: ', response.data);
+                    console.error('Falha ao recuperar ocupação para visulização e cancelamento: ', response.data);
                 });
+            }
+        };
+
+        // Busca paciente por _id
+        self.getPacienteById = function(atendimento){
+            if(atendimento){
+                $http.get(urls.pacientes + '/' + atendimento.paciente).then(function(response){
+                    self.atendimento.paciente = response.data;
+                    self.getFieldsByPaciente(self.atendimento.paciente);
+                }, function(response){
+                    console.error('Falha ao recuperar profissional para visualização e cancelamento: ', response.data);
+                });
+            }
+        };
+
+        // Busca medicamento por _id
+        self.getMedicamentoById = function(atendimento){
+            if(atendimento){
+                for(let i = 0;  i < atendimento.receituario.length; i++){
+                    $http.get(urls.medicamentos + '/' + atendimento.receituario[i].medicamento).then(function(response){
+                        self.atendimento.receituario[i].medicamento = response.data;
+                    }, function(response){
+                        console.error('Falha ao recuperar medicamento para visualização e cancelamento: ', response.data);
+                    });
+                }
+            }
+        };
+
+        // Busca exames solicitados por _id
+        self.getExameSolicitadoById = function(atendimento){
+            if(atendimento){
+                for(let i = 0;  i < atendimento.examesSolicitados.length; i++){
+                    $http.get(urls.procedimentos + '/' + atendimento.examesSolicitados[i].procedimento).then(function(response){
+                        self.atendimento.examesSolicitados[i].procedimento = response.data;
+                    }, function(response){
+                        console.error('Falha ao recuperar exame solicitado para visualização e cancelamento: ', response.data);
+                    });
+                }
+            }
+        };
+
+         // Busca exames avaliados por _id
+         self.getExameAvaliadoById = function(atendimento){
+            if(atendimento){
+                for(let i = 0;  i < atendimento.examesAvaliados.length; i++){
+                    self.atendimento.examesAvaliados[i].dtResultado = new Date(atendimento.examesAvaliados[i].dtResultado);
+                    $http.get(urls.procedimentos + '/' + atendimento.examesAvaliados[i].procedimento).then(function(response){
+                        self.atendimento.examesAvaliados[i].procedimento = response.data;
+                    }, function(response){
+                        console.error('Falha ao recuperar exame avaliado para visualização e cancelamento: ', response.data);
+                    });
+                }
             }
         };
 
@@ -135,7 +234,7 @@
             });
         };
 
-        // Busca paciente por _id
+        // Seta dados do paciente
         self.getFieldsByPaciente = function(paciente){
             if(paciente){
                 $http.get(urls.pacientes + '/' + paciente._id).then(function(response){
