@@ -119,7 +119,7 @@
                         let isPaciente = (obj.paciente ? true : false);                           
 
                         return (isDtInicio&&isDtFinal ? new Date(atendimento.dtAtendimento) >= new Date(obj.dtInicio) && new Date(atendimento.dtAtendimento) <= new Date(obj.dtFinal) : atendimento)
-                            && (isEstado ? atendimento.estado == obj.estado : atendimento) 
+                            && (isEstado ? atendimento.estado === obj.estado.nome : atendimento) 
                             && (isProfissional ? atendimento.profissional == obj.profissional._id : atendimento) 
                             && (isPaciente ? atendimento.paciente == obj.paciente._id : atendimento);
                     }, Object.create(null));
