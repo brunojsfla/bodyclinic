@@ -11,11 +11,9 @@
                 self.getPacientes();
                 msgs.msgSuccess('Paciente salvo com sucesso!');
             }, function(response){
-                if(response.data.code === 11000){
+                if(response.data.code == 11000){
                     if(response.data.errmsg.includes('cpf'))
                         msgs.msgError('O CPF informado já existe para um paciente cadastrado!');
-                    if(response.data.errmsg.includes('email'))
-                        msgs.msgError('O e-mail informado já existe para um paciente cadastrado!');
                     if(response.data.errmsg.includes('cns'))
                         msgs.msgError('O CNS informado já existe para um paciente cadastrado!');
                 }else{

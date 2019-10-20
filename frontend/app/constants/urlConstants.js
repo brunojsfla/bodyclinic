@@ -10,6 +10,7 @@
         suspensoes: 'http://localhost:3005/apibc/suspensoes',
         escalas: 'http://localhost:3005/apibc/escalas',
         medicamentos: 'http://localhost:3005/apibc/medicamentos',
-        atendimentos: 'http://localhost:3005/apibc/atendimentos'
+        atendimentos: 'http://localhost:3005/apibc/atendimentos',
+        email: 'http://localhost:3005/sendmail'
     });
 })()

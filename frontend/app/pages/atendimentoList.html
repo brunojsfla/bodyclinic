@@ -1,16 +1,21 @@
+<headerform-component text="Filtros"></headerform-component>
 <div class="box body">
+    <div ng-include="'pages/atendimentoSearch.html'"></div>
     <table class="table">
         <thead>
             <tr>
+                <th>Identificador</th>
                 <th>Data de Atendimento</th>
                 <th>Paciente</th>
                 <th>Profissional</th>
                 <th>Ocupação</th>
                 <th>Estado</th>
+                <th>Visualizar | Cancelar</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="atendimento in aCtrl.atendimentos">
+                <td>{{ atendimento._id }}</td>
                 <td>{{ atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</td>
                 <td>{{ atendimento.paciente.nome }}</td>
                 <td>{{ atendimento.profissional.nome }}</td>
@@ -18,7 +23,7 @@
                 <td>{{ atendimento.estado }}</td>
                 <td class="table-actions">
                     <button class="btn btn-default" ng-click="aCtrl.showView(atendimento)"><i class="fa fa-eye"></i></button>
-                    <button class="btn btn-danger" ng-click="aCtrl.showCancel(atendimento)" ng-if="atendimento.estado == 'CONCLUÍDO'"><i class="fa fa-pause"></i></button>
+                    <button class="btn btn-danger" ng-click="aCtrl.showCancel(atendimento)" ng-if="atendimento.estado == 'CONCLUÍDO'"><i class="fa fa-close"></i></button>
                 </td>
             </tr>
         </tbody>

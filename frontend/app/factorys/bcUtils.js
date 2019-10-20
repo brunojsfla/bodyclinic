@@ -121,6 +121,16 @@
             return resultado;
         };
 
-        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana, getQuestaoBinaria, getTipoResultadoExame };
+        function getEstadoAtendimento(){
+            let resultado = [];
+
+            resultado.push({valor: 0, nome: 'AGENDADO'});
+            resultado.push({valor: 1, nome: 'CONCLUÍDO'});
+            resultado.push({valor: 2, nome: 'CANCELADO'});
+
+            return resultado;
+        };
+
+        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana, getQuestaoBinaria, getTipoResultadoExame, getEstadoAtendimento };
     }]);
 })();

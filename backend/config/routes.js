@@ -47,4 +47,8 @@ module.exports = function(server){
     //Rota Atendimento
     const atendimentoService = require('../api/services/atendimentoService');
     atendimentoService.register(rt, '/atendimentos');
+
+    //Envio de e-mail
+    const sendEmailService = require('../api/services/sendEmailService');
+    server.post('/sendmail', sendEmailService);
 };

@@ -12,7 +12,7 @@ const pacienteSchema = new mongoose.Schema({
     sexo : {type: String, required : true, uppercase : true, enum : ['MASCULINO', 'FEMININO']},
     nomePai : String,
     nomeMae : String,
-    email : {type: String, required : true, unique: true, trim: true, lowercase: true, validate:[validaEmail, 'O e-mail informado é inválido']},
+    email : {type: String, required: true, trim: true, lowercase: true, validate:[validaEmail, 'O e-mail informado é inválido']},
     telefoneFixo : String,
     telefoneCelular : String,
     endereco : {

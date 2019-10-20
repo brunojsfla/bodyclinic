@@ -3,9 +3,9 @@
     <div class="box-body">
         <div class="col-xs-12 col-sm-12" ng-if="aCtrl.tabUpdate || aCtrl.atendimento.estado == 'CANCELADO'">
             <fieldset>
-                <legend>Cancelamento</legend>
+                <legend><span ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO'">Cancelamento</span><span class="label label-danger" ng-if="aCtrl.atendimento.estado == 'CANCELADO'">ATENDIMENTO CANCELADO</span></legend>
                 <div class="col-xs-12 col-sm-2">
-                    <div class="form-group">
+                    <div class="form-group has-warning">
                         <label>Data de Cancelamento</label>
                         <div class="input-group date">
                             <div class="input-group-addon">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group has-warning">
                         <label>Motivo Cancelamento</label>
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -27,6 +27,17 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Identificador</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-tag"></i>
+                    </div>
+                    <input type="text" id="identificador" class="form-control" ng-disabled="true" ng-model="aCtrl.atendimento._id">
+                </div>
+            </div>
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
@@ -39,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-5">
+        <div class="col-xs-12 col-sm-6">
             <div class="form-group">
                 <label>Profissional</label>
                 <div class="input-group">
@@ -51,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-4">
+        <div class="col-xs-12 col-sm-6">
             <div class="form-group">
                 <label>Ocupação</label>
                 <div class="input-group">
@@ -244,6 +255,7 @@
             <fieldset>
                 <legend>Avaliação de Exames</legend>
                 <button class="btn btn-default" ng-if="aCtrl.atendimento.examesAvaliados[0].procedimento._id" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.clearObjects('exameAval')">Limpar Exames Avaliados</button>
+                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento)" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.examesAvaliados[0].procedimento._id">Enviar Resultado por e-mail</button>
                 <div ng-include="'pages/examesAvaliadosList.html'"></div>
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -280,6 +292,7 @@
             <fieldset>
                 <legend>Receituário</legend>
                 <button class="btn btn-default" ng-if="aCtrl.atendimento.receituario[0].medicamento._id" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.clearObjects('receituario')">Limpar Receituário</button>
+                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento)" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.receituario[0].medicamento._id">Enviar Receituário por e-mail</button>
                 <div ng-include="'pages/prescricoesList.html'"></div>
             </fieldset>
         </div>
@@ -338,7 +351,7 @@
     <div class="box-footer">
         <button type="button" class="btn btn-primary" ng-if="aCtrl.tabCreate" ng-click="aCtrl.saveAtendimento()">Salvar</button>
         <!--<button type="button" class="btn btn-info" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.setPaciente()">Atualizar</button>-->
-        <button type="button" class="btn btn-danger" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.cancelAtendimento()">Cancelar</button>
-        <button type="button" class="btn btn-default" ng-click="aCtrl.getAtendimentos()">Voltar</button>
+        <button type="button" class="btn btn-danger" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.cancelAtendimento()">Salvar Cancelamento</button>
+        <button type="button" class="btn btn-default" ng-if="aCtrl.tabUpdate || aCtrl.tabDelete" ng-click="aCtrl.getAtendimentos()">Voltar</button>
     </div>
 </div>

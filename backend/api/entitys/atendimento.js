@@ -27,7 +27,7 @@ const atendimentoSchema = new mongoose.Schema({
     receituario:[{medicamento: String, instrucoes: String}],
     dtSaida : {type: Date, required : [true, 'Data de saída não informada'], max: Date.now},
     retorno: {type: String, uppercase: true, enum: ['SIM', 'NÃO'], default: 'NÃO'},
-    estado: {type: String, uppercase: true, enum: ['CONCLUÍDO', 'CANCELADO']},
+    estado: {type: String, uppercase: true, enum: ['AGENDADO', 'CONCLUÍDO', 'CANCELADO']},
     dtRetorno : Date,
     dtAlt : {type: Date, default: Date.now},
 });

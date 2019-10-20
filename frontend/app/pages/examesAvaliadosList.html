@@ -37,8 +37,8 @@
                     </div>
                 </td>
                 <td class="table-actions">
-                    <button class="btn btn-success" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.addObject($index, 'exameAval')"><i class="fa fa-plus"></i></button>
-                    <button class="btn btn-danger" ng-class="{disabled: aCtrl.tabDelete}" ng-click="aCtrl.removeObject($index, 'exameAval')"><i class="fa fa-trash-o"></i></button>
+                    <button class="btn btn-success" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.addObject($index, 'exameAval')"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-danger" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.removeObject($index, 'exameAval')"><i class="fa fa-trash-o"></i></button>
                 </td>
             </tr>
         </tbody>
