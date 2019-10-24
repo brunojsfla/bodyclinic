@@ -255,7 +255,7 @@
             <fieldset>
                 <legend>Avaliação de Exames</legend>
                 <button class="btn btn-default" ng-if="aCtrl.atendimento.examesAvaliados[0].procedimento._id" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.clearObjects('exameAval')">Limpar Exames Avaliados</button>
-                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento)" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.examesAvaliados[0].procedimento._id">Enviar Resultado por e-mail</button>
+                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento, 'avaliacao')" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.examesAvaliados[0].procedimento._id">Enviar Resultado por e-mail</button>
                 <div ng-include="'pages/examesAvaliadosList.html'"></div>
                 <div class="col-xs-12 col-sm-12">
                     <div class="form-group">
@@ -292,7 +292,7 @@
             <fieldset>
                 <legend>Receituário</legend>
                 <button class="btn btn-default" ng-if="aCtrl.atendimento.receituario[0].medicamento._id" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-click="aCtrl.clearObjects('receituario')">Limpar Receituário</button>
-                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento)" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.receituario[0].medicamento._id">Enviar Receituário por e-mail</button>
+                <button class="btn btn-default" ng-click="aCtrl.sendMail(aCtrl.atendimento, 'receituario')" ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO' && aCtrl.atendimento.receituario[0].medicamento._id">Enviar Receituário por e-mail</button>
                 <div ng-include="'pages/prescricoesList.html'"></div>
             </fieldset>
         </div>

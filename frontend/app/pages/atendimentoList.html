@@ -10,7 +10,7 @@
                 <th>Profissional</th>
                 <th>Ocupação</th>
                 <th>Estado</th>
-                <th>Visualizar | Cancelar</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -22,6 +22,7 @@
                 <td>{{ atendimento.ocupacao.nome }}</td>
                 <td>{{ atendimento.estado }}</td>
                 <td class="table-actions">
+                    <button class="btn btn-info" ng-click="aCtrl.showEdit(atendimento)" ng-if="atendimento.estado == 'AGENDADO'"><i class="fa fa-play"></i></button>
                     <button class="btn btn-default" ng-click="aCtrl.showView(atendimento)"><i class="fa fa-eye"></i></button>
                     <button class="btn btn-danger" ng-click="aCtrl.showCancel(atendimento)" ng-if="atendimento.estado == 'CONCLUÍDO'"><i class="fa fa-close"></i></button>
                 </td>

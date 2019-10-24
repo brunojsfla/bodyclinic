@@ -27,6 +27,17 @@
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
+                <label>Data de Início</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="date" class="form-control pull-right" id="dtInicio" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.dtInicio"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <div class="form-group">
                 <label>Dia da Semana</label>
                 <div class="input-group">
                     <div class="input-group-addon">

@@ -2,6 +2,7 @@ const restfull = require('node-restful');
 const mongoose = restfull.mongoose;
 
 const escalaAtendimentoSchema = new mongoose.Schema({
+    dtInicio: {type: Date, min: Date.now},
     profissional: {type: String, required : [true, 'Profissional não informado']},
     ocupacao: {type: String, required : [true, 'Ocupação não informada']},
     diaSemana: {type : String, required : [true, 'Dia da semana não informado'], 

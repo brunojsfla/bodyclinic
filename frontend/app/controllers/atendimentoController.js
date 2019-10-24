@@ -10,40 +10,82 @@
         self.filter.dtInicio = new Date();
         self.filter.dtFinal = new Date();
 
-        self.sendMail = function(atendimento){
-            console.log('Preparando receituário para ser enviado via e-mail...');
-            msgs.msgInfo('Preparando receituário para ser enviado via e-mail...');
-            if(atendimento.paciente.email){
-                let dtAtendimento = new Date(atendimento.dtAtendimento);
-                let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
-                                to: atendimento.paciente.email,
-                                cc: 'lorenascferreira12@gmail.com', 
-                                subject: 'Body Clinic',
-                                //text: `Olá, ${atendimento.paciente.nome}! Segue abaixo seu receituário `,
-                                html: `<b>Olá, ${atendimento.paciente.nome}!</b><br><p>Esse é um e-mail de envio automático, não é necessário respondê-lo.</p>
-                                <p>Foi emitido um receituário no seu atendimento de ID ${atendimento._id}, em ${dtAtendimento}.
-                                O mesmo segue anexo para download.</p>
-                                <p>Att,</p><br>
-                                <p>Equipe Body Clinic</p>`,
-                                attachments: [
-                                    {   
-                                        filename: 'Receituario.txt',
-                                        content: `RECEITUÁRIO
-                                        Paciente: ${atendimento.paciente.nome} | Profissional: ${atendimento.profissional.nome} - ${atendimento.ocupacao.nome}
-                                        Teste de teste`
-                                    }
-                                ]
-                };
-            
-                $http.post(urls.email, mailInfo).then(function(response){
-                    msgs.msgSuccess('E-mail enviado com sucesso!');
-                    console.log('E-mail enviado com sucesso!');
-                }).catch(function(error){
-                    msgs.msgError('Não foi possível enviar e-mail!');
-                    console.error('Falha ao enviar e-mail:', error);
-                });
-            }else{
-                msgs.msgError(`Não foi possível enviar pois o(a) paciente ${atendimento.paciente.nome} não possui e-mail cadastrado.`);
+        self.sendMail = function(atendimento, type){
+            console.log('Atendimento via e-mail...', atendimento);
+            console.log('Preparando e-mail...');
+            msgs.msgInfo(`Preparando e-mail...`);
+            try {
+                if(atendimento.paciente.email){
+                    let dtAtendimento = new Date(atendimento.dtAtendimento);
+                    let conteudo = "";
+                    let anexo = {};
+                    let exames = "";
+                    let medicamentos = "";
+                    if(type === 'receituario'){
+                        for(let i = 0; i < atendimento.receituario.length; i++){
+                            medicamentos += '- ' + atendimento.receituario[i].medicamento.nomeGenerico + ' | Intruções: ' + atendimento.receituario[i].instrucoes + '\n'; 
+                        }
+                        conteudo = `<b>Olá, ${atendimento.paciente.nome}!</b><br><p><i>Este é um e-mail de envio automático, não é necessário respondê-lo.</i></p>
+                        <p>Foi emitido um receituário no seu atendimento de ID ${atendimento._id} em ${dtAtendimento.getDate()}/${dtAtendimento.getMonth() + 1}/${dtAtendimento.getFullYear()}.
+                        O mesmo segue anexo para download. Em caso de dúvidas, entre em contato com o profissional responsável, que segue em cópia neste e-mail.</p>
+                        <p>Att,</p>
+                        <p>Equipe Body Clinic</p>`;
+    
+                        anexo = {   
+                            filename: 'Receituario.txt',
+                            content: `                                             RECEITUÁRIO
+                            Paciente: ${atendimento.paciente.nome}
+                            
+                            ${medicamentos}
+                            
+                                ------------------------------------------
+                            ${atendimento.profissional.nome} - ${atendimento.ocupacao.nome}/ CRM: ${atendimento.profissional.crm}`
+                        };
+                    }
+                    if(type === 'avaliacao'){
+                        for(let i = 0; i < atendimento.examesAvaliados.length; i++){
+                            exames += '- ' + atendimento.examesAvaliados[i].procedimento.nome + ' | Data de Avaliação: ' + atendimento.examesAvaliados[i].dtResultado.getDate() +'/'+ (atendimento.examesAvaliados[i].dtResultado.getMonth() + 1) + '/' + atendimento.examesAvaliados[i].dtResultado.getFullYear() + ' | Resultado: ' + atendimento.examesAvaliados[i].resultado + '\n'; 
+                        }
+                        conteudo = `<b>Olá, ${atendimento.paciente.nome}!</b><br><p><i>Este é um e-mail de envio automático, não é necessário respondê-lo.</i></p>
+                        <p>Foi emitida uma avaliação de exame(s) no seu atendimento de ID ${atendimento._id} em ${dtAtendimento.getDate()}/${dtAtendimento.getMonth() + 1}/${dtAtendimento.getFullYear()}.
+                        A mesma segue anexa para download. Em caso de dúvidas, entre em contato com o profissional responsável, que segue em cópia neste e-mail.</p>
+                        <p>Att,</p>
+                        <p>Equipe Body Clinic</p>`;
+    
+                        anexo = {   
+                            filename: 'ExamesAvaliados.txt',
+                            content: `                                             AVALIAÇÃO DE EXAMES
+                            Paciente: ${atendimento.paciente.nome}
+                            
+                            ${exames}
+                            
+                                ------------------------------------------
+                            ${atendimento.profissional.nome} - ${atendimento.ocupacao.nome}/ CRM: ${atendimento.profissional.crm}`
+                        };
+                    }
+                    
+                    let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
+                                    to: atendimento.paciente.email,
+                                    cc: 'lorenascferreira12@gmail.com', 
+                                    subject: 'Body Clinic',
+                                    //text: `Olá, ${atendimento.paciente.nome}! Segue abaixo seu receituário `,
+                                    html: conteudo,
+                                    attachments: [anexo]
+                    };
+                
+                    $http.post(urls.email, mailInfo).then(function(response){
+                        msgs.msgSuccess('E-mail enviado com sucesso!');
+                        console.log('E-mail enviado com sucesso!');
+                    }).catch(function(error){
+                        msgs.msgError('Não foi possível enviar e-mail!');
+                        console.error('Falha ao enviar e-mail:', error);
+                    });
+                }else{
+                    msgs.msgError(`Não foi possível enviar pois o(a) paciente ${atendimento.paciente.nome} não possui e-mail cadastrado.`);
+                }
+            }
+            catch(err) {
+                msgs.msgError('Falha eo enviar e-mail.', err);
             }
             
         };
@@ -71,7 +113,6 @@
         };
 
         self.getAtendimentos = function(obj){
-            console.log('Filtros: ', obj);
             $http.get(urls.atendimentos+'?sort=dtAtendimento').then(function(response){
                 console.log('Atualizando lista de atendimentos...');
                 
@@ -110,6 +151,7 @@
                 }
 
                 console.log('Aplicando filtros para pesquisa...');
+                console.log('Filtros...', obj);
                 if(obj){
                     atendimentoAux = response.data.filter(function(atendimento){
                         let isDtInicio = (obj.dtInicio ? true : false);
@@ -118,7 +160,7 @@
                         let isProfissional = (obj.profissional ? true : false);
                         let isPaciente = (obj.paciente ? true : false);                           
 
-                        return (isDtInicio&&isDtFinal ? new Date(atendimento.dtAtendimento) >= new Date(obj.dtInicio) && new Date(atendimento.dtAtendimento) <= new Date(obj.dtFinal) : atendimento)
+                        return (isDtInicio&&isDtFinal ? new Date(atendimento.dtAtendimento) >= new Date(obj.dtInicio).setHours(0, 0) && new Date(atendimento.dtAtendimento) <= new Date(obj.dtFinal).setHours(23, 59) : atendimento)
                             && (isEstado ? atendimento.estado === obj.estado.nome : atendimento) 
                             && (isProfissional ? atendimento.profissional == obj.profissional._id : atendimento) 
                             && (isPaciente ? atendimento.paciente == obj.paciente._id : atendimento);

@@ -137,7 +137,8 @@
         self.setFieldsEscala = function(escala){
             if(escala){
                 self.getProfissionalById(escala);
-                self.getOcupacaoById(escala);                              
+                self.getOcupacaoById(escala);
+                self.escala.dtInicio = new Date(escala.dtInicio);
             }
         };
 
