@@ -16,7 +16,10 @@
     });
     app.filter('hora', function(){
         return function(value){
-            return value.substr(0, 2) + ':' + value.substr(2, 2);
+            if(value < 10)
+                return '0'+ value + ':00';
+            else
+                return value + ':00';
         }
     });
 })();

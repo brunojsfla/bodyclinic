@@ -131,6 +131,15 @@
             return resultado;
         };
 
-        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana, getQuestaoBinaria, getTipoResultadoExame, getEstadoAtendimento };
+        function getHorariosAgenda(){
+            let horarios = [];
+
+            for(let i = 0; i < 24; i++)
+                horarios.push({hora: i, paciente: 'Horário disponível', idAgendamento: 'Nenhum'});
+
+            return horarios;
+        };
+
+        return { getSexo, getPerfil, getTipoLogradouro, getMotivoSuspensaoEscala, getDiasSemana, getQuestaoBinaria, getTipoResultadoExame, getEstadoAtendimento, getHorariosAgenda };
     }]);
 })();

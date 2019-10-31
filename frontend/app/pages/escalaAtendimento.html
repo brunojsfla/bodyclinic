@@ -5,7 +5,7 @@
         <ul class="nav nav-tabs">
             <li ng-if="eaCtrl.tabList" ng-class="{active: eaCtrl.tabList}">
                 <a href data-target="#list" data-toggle="tab">
-                    <i class="fa fa-bars"></i> Listar
+                    <i class="fa fa-pencil-square-o"></i> Agenda
                 </a>
             </li>
             <li ng-if="eaCtrl.tabCreate">
@@ -13,7 +13,7 @@
                     <i class="fa fa-plus"></i> Incluir
                 </a>
             </li>
-            <li ng-if="eaCtrl.tabUpdate" ng-class="{active: eaCtrl.tabUpdate}">
+            <!--<li ng-if="eaCtrl.tabUpdate" ng-class="{active: eaCtrl.tabUpdate}">
                 <a href data-target="#update" data-toggle="tab">
                     <i class="fa fa-edit"></i> Alterar
                 </a>
@@ -22,12 +22,12 @@
                 <a href data-target="#delete" data-toggle="tab">
                     <i class="fa fa-eraser"></i> Excluir
                 </a>
-            </li>
+            </li>-->
         </ul>
         <div class="tab-content">
             <div class="tab-pane" id="list" ng-if="eaCtrl.tabList" ng-class="{active: eaCtrl.tabList}" ng-include="'pages/escalaAtendimentoList.html'"></div>
-            <div class="tab-pane" id="insert" ng-if="eaCtrl.tabCreate" ng-include="'pages/escalaAtendimentoForm.html'"></div>
-            <div class="tab-pane" id="update" ng-if="eaCtrl.tabUpdate" ng-class="{active: eaCtrl.tabUpdate}" ng-include="'pages/escalaAtendimentoForm.html'"></div>
+            <div class="tab-pane" id="insert" ng-if="eaCtrl.tabCreate" ng-class="{active: eaCtrl.tabCreate}" ng-include="'pages/escalaAtendimentoForm.html'"></div>
+            <!--<div class="tab-pane" id="update" ng-if="eaCtrl.tabUpdate" ng-class="{active: eaCtrl.tabUpdate}" ng-include="'pages/escalaAtendimentoForm.html'"></div>-->
             <div class="tab-pane" id="delete" ng-if="eaCtrl.tabDelete" ng-class="{active: eaCtrl.tabDelete}" ng-include="'pages/escalaAtendimentoForm.html'"></div>
         </div>
     </div>

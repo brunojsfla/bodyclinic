@@ -4,7 +4,8 @@ const mongoose = restfull.mongoose;
 const atendimentoSchema = new mongoose.Schema({
     dtCancelamento: {type: Date, max: Date.now},
     descMotivoCancelamento: String,
-    dtAtendimento : {type: Date, required : [true, 'Data de atendimento não informada'], max: Date.now},
+    dtAtendimento : {type: Date, required : [true, 'Data de atendimento não informada']},
+    horaAtendimento: {type: String, required : [true, 'Hora de Atendimento não informada']},
     profissional:{type: String, required:[true, 'Profissional não informado']}, 
     paciente:{type: String, required:[true, 'Paciente não informado']}, 
     ocupacao:{type: String, required:[true, 'Ocupação não informada']}, 
@@ -25,10 +26,11 @@ const atendimentoSchema = new mongoose.Schema({
     examesSolicitados:[{procedimento: String}],
     notaExameSolicitado: String,
     receituario:[{medicamento: String, instrucoes: String}],
-    dtSaida : {type: Date, required : [true, 'Data de saída não informada'], max: Date.now},
+    dtSaida : {type: Date, required : [true, 'Data de saída não informada']},
     retorno: {type: String, uppercase: true, enum: ['SIM', 'NÃO'], default: 'NÃO'},
     estado: {type: String, uppercase: true, enum: ['AGENDADO', 'CONCLUÍDO', 'CANCELADO']},
     dtRetorno : Date,
+    escalaAtendimento : String,
     dtAlt : {type: Date, default: Date.now},
 });
 

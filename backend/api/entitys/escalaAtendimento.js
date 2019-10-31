@@ -1,20 +1,16 @@
 const restfull = require('node-restful');
 const mongoose = restfull.mongoose;
+const moment = require('moment');
 
 const escalaAtendimentoSchema = new mongoose.Schema({
-    dtInicio: {type: Date, min: Date.now},
+    dtAtendimento: Date,
     profissional: {type: String, required : [true, 'Profissional não informado']},
     ocupacao: {type: String, required : [true, 'Ocupação não informada']},
-    diaSemana: {type : String, required : [true, 'Dia da semana não informado'], 
-                uppercase : true,
-                enum : ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA',
-                        'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO']}, 
+    paciente: {type: String, required : [true, 'Paciente não informado']},
     horaInicio: {type: String, required : [true, 'Hora de Início não informada']},
-    horaTermino: {type: String, required : [true, 'Hora de Término não informada']},
-    qtdAtendimentos: Number,
     estado: {type : String, required : [true, 'Estado da Escala de Atendimento não informado'], 
-             uppercase : true, default : 'PROGRAMADA', 
-             enum : ['PROGRAMADA', 'ATIVA', 'VENCIDA']}    
+             uppercase : true, default : 'ATIVA', 
+             enum : ['ATIVA', 'VENCIDA']}    
 });
 
 module.exports = restfull.model('EscalaAtendimento', escalaAtendimentoSchema);

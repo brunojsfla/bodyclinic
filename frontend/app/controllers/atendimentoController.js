@@ -85,7 +85,8 @@
                 }
             }
             catch(err) {
-                msgs.msgError('Falha eo enviar e-mail.', err);
+                console.error('Falha ao enviar e-mail:', err);
+                msgs.msgError('Falha ao enviar e-mail!');
             }
             
         };

@@ -8,8 +8,8 @@
                     <div class="input-group-addon">
                         <i class="fa fa-user-md"></i>
                     </div>
-                    <select class="form-control" name="profissional" id="profissional" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.profissional" 
-                        ng-options="s.nome for s in eaCtrl.profissionais track by s._id" ng-change="eaCtrl.getOcupacoesByProfissional(eaCtrl.escala.profissional)"></select>
+                    <select class="form-control" name="profissional" id="profissional" ng-disabled="true" ng-model="eaCtrl.escala.profissional" 
+                        ng-options="s.nome for s in eaCtrl.profissionais track by s._id"></select>
                 </div>
             </div>
         </div>
@@ -25,70 +25,45 @@
                 </div>
             </div>
         </div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <label>Paciente</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <select class="form-control" name="paciente" id="paciente" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.paciente" 
+                        ng-options="p.nome for p in eaCtrl.pacientes track by p._id"></select>
+                </div>
+            </div>
+        </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Data de Início</label>
+                <label>Data de Atendimento</label>
                 <div class="input-group date">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="date" class="form-control pull-right" id="dtInicio" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.dtInicio"/>
+                    <input type="date" class="form-control pull-right" id="dtAtendimento" ng-disabled="true" ng-model="eaCtrl.escala.dtAtendimento"/>
                 </div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-3">
             <div class="form-group">
-                <label>Dia da Semana</label>
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-list-ol"></i>
-                    </div>
-                    <select class="form-control" name="diaSemana" id="diaSemana" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.diaSemana">
-                        <option ng-repeat="diaSemana in eaCtrl.diasSemana">{{ diaSemana.nome }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-group">
-                <label>Início</label>
+                <label>Horário</label>
                 <div class="input-group date">
                     <div class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control" id="horaInicio" ng-disabled="eaCtrl.tabDelete" ng-model="eaCtrl.escala.horaInicio" ui-mask="99:99"
-                        ng-change="eaCtrl.calcHoraTermino(eaCtrl.escala.horaInicio, eaCtrl.escala.qtdAtendimentos)">
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-group">
-                <label>Quantidade</label>
-                <div class="input-group date">
-                    <div class="input-group-addon">
-                        <i class="fa fa-level-up"></i>
-                    </div>
-                    <input type="number" class="form-control" id="qtdAtendimentos" ng-disabled="eaCtrl.tabDelete" placeholder="0"
-                        ng-model="eaCtrl.escala.qtdAtendimentos" ng-change="eaCtrl.calcHoraTermino(eaCtrl.escala.horaInicio, eaCtrl.escala.qtdAtendimentos)">
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <div class="form-group">
-                <label>Término</label>
-                <div class="input-group date">
-                    <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                    </div>
-                    <input type="text" class="form-control" id="horaTermino" ng-disabled="true" ng-model="eaCtrl.escala.horaTermino" ui-mask="99:99">
+                    <input type="text" class="form-control" id="horaInicio" ng-disabled="true" ng-model="eaCtrl.escala.horaInicio" ui-mask="99:99">
                 </div>
             </div>
         </div>
     </div>
     <div class="box-footer">
         <button type="button" class="btn btn-primary" ng-if="eaCtrl.tabCreate" ng-click="eaCtrl.saveEscala()">Salvar</button>
-        <button type="button" class="btn btn-info" ng-if="eaCtrl.tabUpdate" ng-click="eaCtrl.setEscala()">Atualizar</button>
+        <!--<button type="button" class="btn btn-info" ng-if="eaCtrl.tabUpdate" ng-click="eaCtrl.setEscala()">Atualizar</button>-->
         <button type="button" class="btn btn-danger" ng-if="eaCtrl.tabDelete" ng-click="eaCtrl.deleteEscala()">Excluir</button>
-        <button type="button" class="btn btn-default" ng-click="eaCtrl.getEscalas()">Cancelar</button>
+        <button type="button" class="btn btn-default" ng-click="eaCtrl.start()">Cancelar</button>
     </div>
 </div>
