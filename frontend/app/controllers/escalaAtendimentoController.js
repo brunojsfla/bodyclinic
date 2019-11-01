@@ -276,8 +276,9 @@
         };
 
         self.getOcupacoesByProfissional = function(filter){
-            if(filter.profissional){
-                $http.get(urls.ocupacoes + `/?_id=${filter.profissional.ocupacao}&sort=nome`).then(function(response){
+            if(filter){
+                console.log('FILTER', filter);
+                $http.get(urls.ocupacoes + `/?_id=${filter.ocupacao}&sort=nome`).then(function(response){
                     self.ocupacoes = {};
                     self.ocupacoes = response.data;
                     console.log('Ocupações retornadas: ', self.ocupacoes.length);
@@ -293,7 +294,7 @@
             if(filter){
                 console.log('Horário: ', typeof horario);
                 self.getProfissionalById(filter);
-                self.getOcupacoesByProfissional(filter);
+                self.getOcupacoesByProfissional(filter.profissional);
                 self.escala.dtAtendimento = new Date(filter.dtAtendimento);
                 if(horario.hora < 10)
                     self.escala.horaInicio = '0'+horario.hora.toString()+'00';
@@ -306,6 +307,7 @@
         self.getProfissionalById = function(escala){
             if(escala){
                 $http.get(urls.profissionais + '/' + (escala.profissional._id ? escala.profissional._id : escala.profissional)).then(function(response){
+                    //self.getOcupacoesByProfissional(escala);
                     self.escala.profissional = response.data;
                 }, function(response){
                     console.error('Falha ao recuperar profissional para exclusão: ', response.data);
@@ -315,9 +317,10 @@
 
         // Busca ocupação por _id
         self.getOcupacaoById = function(escala){
-            console.log('getOcupacao', escala);
             if(!escala.ocupacao._id){
                 $http.get(urls.ocupacoes + '/' + (escala.ocupacao._id ? escala.ocupacao._id : escala.ocupacao)).then(function(response){
+                    console.log('Teve retorno', response.data);
+                    self.getOcupacoesByProfissional(escala.profissional);
                     self.escala.ocupacao = response.data;
                 }, function(response){
                     console.error('Falha ao recuperar ocupação para exclusão: ', response.data);
