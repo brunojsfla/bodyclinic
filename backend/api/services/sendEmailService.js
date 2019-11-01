@@ -16,7 +16,7 @@ module.exports = function sendEmailService(req, res, next){
     console.log('Enviando e-mail...');
     mailModule.verify(function(error, success){
         if(error)
-            console.log('Falha no serviço SMTP');
+            console.log('Falha no serviço SMTP', error);
         else{
             var mailOptions = {
                 from: req.body.from,

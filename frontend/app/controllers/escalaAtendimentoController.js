@@ -9,6 +9,59 @@
         self.horaAtual = new Date().getHours();
         self.dateNow = new Date();
         self.atendimento = {};
+        self.diasSemana = bcUtils.getDiasSemana();
+
+        self.sendMail = function(escala, type){
+            console.log('Escala via e-mail...', escala);
+            console.log('Preparando e-mail...');
+            //msgs.msgInfo('Preparando e-mail...');
+            try {
+                if(escala.paciente.email){
+                    let dtAtendimento = new Date(escala.dtAtendimento);
+                    let conteudo = "";
+                    let diaSemana = self.diasSemana[dtAtendimento.getDay()].nome;
+
+                    if(type === 'agendamento'){
+                        conteudo = `<b>Olá, ${escala.paciente.nome}!</b><br><p><i>Este é um e-mail de envio automático, não é necessário respondê-lo.</i></p>
+                        <p>Sua consulta foi agendada com sucesso. Seguem os dados da mesma:</p>  
+                        <p><b>Data da consulta:</b> ${diaSemana}, ${dtAtendimento.getDate()}/${dtAtendimento.getMonth() + 1}/${dtAtendimento.getFullYear()} - ${escala.horaInicio.substr(0, 2)}:${escala.horaInicio.substr(2, 2)} hora(s).</p>
+                        <p><b>Profissional:</b> ${escala.profissional.nome} - <b>Especialidade:</b> ${escala.ocupacao.nome}.</p>
+                        <p>Em caso de desistência, favor avisar com 24 horas de antecedência.</p>
+                        <p>Att,</p>
+                        <p>Equipe Body Clinic</p>`;
+                    } 
+                    
+                    if(type === 'cancelamento'){
+                        conteudo = `<b>Olá, ${escala.paciente.nome}!</b><br><p><i>Este é um e-mail de envio automático, não é necessário respondê-lo.</i></p>  
+                        <p>Informamos que sua consulta agendadada para ${diaSemana}, ${dtAtendimento.getDate()}/${dtAtendimento.getMonth() + 1}/${dtAtendimento.getFullYear()} - ${escala.horaInicio.substr(0, 2)}:${escala.horaInicio.substr(2, 2)} hora(s),
+                        com o profissional ${escala.profissional.nome} - ${escala.ocupacao.nome}, foi <strong>CANCELADA</strong>.</p>
+                        <p>Att,</p>
+                        <p>Equipe Body Clinic</p>`;
+                    }
+                    
+                    let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
+                                    to: escala.paciente.email,
+                                    cc: 'lorenascferreira12@gmail.com', 
+                                    subject: 'Body Clinic',
+                                    html: conteudo};
+                
+                    $http.post(urls.email, mailInfo).then(function(response){
+                        //msgs.msgSuccess('E-mail enviado com sucesso!');
+                        console.log('E-mail enviado com sucesso!');
+                    }).catch(function(error){
+                        //msgs.msgError('Não foi possível enviar e-mail!');
+                        console.error('Falha ao enviar e-mail:', error);
+                    });
+                }else{
+                    console.log(`Não foi possível enviar pois o(a) paciente ${escala.paciente.nome} não possui e-mail cadastrado.`);
+                }
+            }
+            catch(err) {
+                console.error('Falha ao enviar e-mail:', err);
+                //msgs.msgError('Falha ao enviar e-mail!');
+            }
+            
+        };
 
         //Gera vetor de horários
         self.geraHorarios = function(){
@@ -94,6 +147,7 @@
                 self.start();
                 self.geraHorarios();
                 msgs.msgSuccess('Escala de Atendimento salva com sucesso!');
+                self.sendMail(self.escala, 'agendamento');
                 
                 //Agenda o atendimento
                 self.atendimento.escalaAtendimento = response.data._id;
@@ -216,6 +270,7 @@
             const urlDelete = `${urls.escalas}/${self.escala._id}`;
             $http.delete(urlDelete, self.escala).then(function(response){
                 self.geraHorarios();
+                self.sendMail(self.escala, 'cancelamento');
                 //Cancela atendimento agendado              
                 $http.get(urls.atendimentos+'/?escalaAtendimento='+self.escala._id).then(function(response){
                     self.atendimento = response.data[0];
