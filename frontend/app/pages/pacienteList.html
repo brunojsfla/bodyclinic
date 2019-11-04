@@ -15,7 +15,7 @@
                 <td>{{ paciente.dtNasc | date:'dd/MM/yyyy' }}</td>
                 <td>{{ paciente.sexo }}</td>
                 <td><span ng-if="paciente.telefoneCelular">{{ paciente.telefoneCelular | telCelular }}</span>
-                    <span ng-if="paciente.telefoneCelular && paciente.telefoneFixo"> - </span>
+                    <span ng-if="paciente.telefoneCelular && paciente.telefoneFixo"> | </span>
                     <span ng-if="paciente.telefoneFixo">{{ paciente.telefoneFixo | telFixo }}</span>
                 </td>
                 <td>{{ paciente.email }}</td>
