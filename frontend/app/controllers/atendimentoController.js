@@ -203,6 +203,15 @@
                 msgs.msgWarning('Data do atendimento superior a data atual');
                 return;
             }
+
+            if((new Date().getFullYear() == new Date(atendimento.dtAtendimento).getFullYear() &&
+                new Date().getMonth() == new Date(atendimento.dtAtendimento).getMonth() &&
+                new Date().getDate() == new Date(atendimento.dtAtendimento).getDate()) &&
+                (new Date().getHours() < parseInt(atendimento.horaAtendimento.substr(0, 2)))){
+                
+                msgs.msgWarning('Hora de atendimento superior a hora atual');
+                return;
+            }
             self.atendimento = atendimento;
             self.setFieldsAtendimento(atendimento);
             tabsFactory.showTabs(self, {tabCreate: true});
