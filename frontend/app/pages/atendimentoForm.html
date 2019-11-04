@@ -1,7 +1,7 @@
 <headerform-component text="Cadastro de atendimento"></headerform-component>
 <div class="form" role="form">
     <div class="box-body">
-        <div class="col-xs-12 col-sm-12" ng-if="aCtrl.tabUpdate || aCtrl.atendimento.estado == 'CANCELADO'">
+        <div class="col-xs-12 col-sm-12" ng-if="aCtrl.tabDelete || aCtrl.atendimento.estado == 'CANCELADO'">
             <fieldset>
                 <legend><span ng-if="aCtrl.atendimento.estado == 'CONCLUÍDO'">Cancelamento</span><span class="label label-danger" ng-if="aCtrl.atendimento.estado == 'CANCELADO'">ATENDIMENTO CANCELADO</span></legend>
                 <div class="col-xs-12 col-sm-2">
@@ -11,7 +11,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
-                            <input type="date" class="form-control pull-right" id="dtcancelamento" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.dtCancelamento">
+                            <input type="date" class="form-control pull-right" id="dtcancelamento" ng-disabled="aCtrl.tabUpdate" ng-model="aCtrl.atendimento.dtCancelamento">
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-list"></i>
                             </div>
-                            <textarea rows="3" class="form-control" ng-disabled="aCtrl.tabDelete" ng-model="aCtrl.atendimento.descMotivoCancelamento"></textarea>
+                            <textarea rows="3" class="form-control" ng-disabled="aCtrl.tabUpdate" ng-model="aCtrl.atendimento.descMotivoCancelamento"></textarea>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="date" class="form-control pull-right" id="dtAtendimento" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="aCtrl.atendimento.dtAtendimento"/>
+                    <input type="date" class="form-control pull-right" id="dtAtendimento" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate || aCtrl.atendimento.estado == 'AGENDADO'" ng-model="aCtrl.atendimento.dtAtendimento"/>
                 </div>
             </div>
         </div>
@@ -57,7 +57,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control" id="horaAtendimento" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="aCtrl.atendimento.horaAtendimento" ui-mask="99:99">
+                    <input type="text" class="form-control" id="horaAtendimento" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate || aCtrl.atendimento.estado == 'AGENDADO'" ng-model="aCtrl.atendimento.horaAtendimento" ui-mask="99:99">
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-user-md"></i>
                     </div>
-                    <select class="form-control" name="profissional" id="profissional" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="aCtrl.atendimento.profissional" 
+                    <select class="form-control" name="profissional" id="profissional" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate || aCtrl.atendimento.estado == 'AGENDADO'" ng-model="aCtrl.atendimento.profissional" 
                         ng-options="s.nome for s in aCtrl.profissionais track by s._id" ng-change="aCtrl.getOcupacoesByProfissional(aCtrl.atendimento.profissional)"></select>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-graduation-cap"></i>
                     </div>
-                    <select class="form-control" name="ocupacao" id="ocupacao" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="aCtrl.atendimento.ocupacao" 
+                    <select class="form-control" name="ocupacao" id="ocupacao" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate || aCtrl.atendimento.estado == 'AGENDADO'" ng-model="aCtrl.atendimento.ocupacao" 
                         ng-options="o.nome for o in aCtrl.ocupacoes track by o._id"></select>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-user"></i>
                     </div>
-                    <select class="form-control" name="paciente" id="paciente" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate" ng-model="aCtrl.atendimento.paciente" 
+                    <select class="form-control" name="paciente" id="paciente" ng-disabled="aCtrl.tabDelete || aCtrl.tabUpdate || aCtrl.atendimento.estado == 'AGENDADO'" ng-model="aCtrl.atendimento.paciente" 
                         ng-options="p.nome for p in aCtrl.pacientes track by p._id" ng-change="aCtrl.getFieldsByPaciente(aCtrl.atendimento.paciente)"></select>
                 </div>
             </div>
@@ -362,7 +362,7 @@
     <div class="box-footer">
         <button type="button" class="btn btn-primary" ng-if="aCtrl.tabCreate" ng-click="aCtrl.saveAtendimento()">Salvar</button>
         <!--<button type="button" class="btn btn-info" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.setPaciente()">Atualizar</button>-->
-        <button type="button" class="btn btn-danger" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.cancelAtendimento()">Salvar Cancelamento</button>
-        <button type="button" class="btn btn-default" ng-if="aCtrl.tabUpdate || aCtrl.tabDelete" ng-click="aCtrl.getAtendimentos()">Voltar</button>
+        <button type="button" class="btn btn-danger" ng-if="aCtrl.tabDelete" ng-click="aCtrl.cancelAtendimento()">Salvar Cancelamento</button>
+        <button type="button" class="btn btn-default" ng-if="aCtrl.tabUpdate || aCtrl.tabDelete || aCtrl.tabCreate" ng-click="aCtrl.getAtendimentos()">Voltar</button>
     </div>
 </div>

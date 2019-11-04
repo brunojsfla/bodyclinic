@@ -22,4 +22,10 @@
                 return value + ':00';
         }
     });
+    app.filter('horaAtendimento', function(){
+        return function(value){
+            return value.substr(0, 2) + ':' + value.substr(2, 3);
+            
+        }
+    });
 })();

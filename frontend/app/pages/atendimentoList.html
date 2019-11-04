@@ -6,6 +6,7 @@
             <tr>
                 <th>Identificador</th>
                 <th>Data de Atendimento</th>
+                <th>Horário</th>
                 <th>Paciente</th>
                 <th>Profissional</th>
                 <th>Ocupação</th>
@@ -17,6 +18,7 @@
             <tr ng-repeat="atendimento in aCtrl.atendimentos">
                 <td>{{ atendimento._id }}</td>
                 <td>{{ atendimento.dtAtendimento | date:'dd/MM/yyyy' }}</td>
+                <td>{{ atendimento.horaAtendimento | horaAtendimento }}</td>
                 <td>{{ atendimento.paciente.nome }}</td>
                 <td>{{ atendimento.profissional.nome }}</td>
                 <td>{{ atendimento.ocupacao.nome }}</td>

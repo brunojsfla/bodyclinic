@@ -103,14 +103,25 @@
         };
 
         self.saveAtendimento = function(){
-            self.atendimento.estado = 'CONCLUÍDO';
-            $http.post(urls.atendimentos, self.atendimento).then(function(response){
-                self.getAtendimentos();
-                msgs.msgSuccess('Atendimento salvo com sucesso!');
-            }, function(response){
-                msgs.msgError(response.data.errors);
-                console.error('Erro ao salvar atendimento: ', response.data);
-            });
+            if(self.atendimento.estado = 'AGENDADO'){
+                self.atendimento.estado = 'CONCLUÍDO';
+                $http.put(urls.atendimentos+'/'+self.atendimento._id, self.atendimento).then(function(response){
+                    self.getAtendimentos();
+                    msgs.msgSuccess('Atendimento salvo com sucesso!');
+                }, function(response){
+                    msgs.msgError(response.data.errors);
+                    console.error('Erro ao salvar atendimento: ', response.data);
+                });
+            }else{
+                self.atendimento.estado = 'CONCLUÍDO';
+                $http.post(urls.atendimentos, self.atendimento).then(function(response){
+                    self.getAtendimentos();
+                    msgs.msgSuccess('Atendimento salvo com sucesso!');
+                }, function(response){
+                    msgs.msgError(response.data.errors);
+                    console.error('Erro ao salvar atendimento: ', response.data);
+                });
+            }            
         };
 
         self.getAtendimentos = function(obj){
@@ -169,12 +180,12 @@
 
                 }
 
-                if(atendimentoAux.length < 1){
+                if(obj && atendimentoAux.length < 1){
                     msgs.msgInfo('A pesquisa não encontrou resultados com  base nos paramêtros informados.');
                 }
 
                 self.atendimentos = atendimentoAux;
-                tabsFactory.showTabs(self, {tabList: true, tabCreate: true});
+                tabsFactory.showTabs(self, {tabList: true});
                 self.atendimento.dtAtendimento = new Date();
                 //Inicalização dos objetos necessários
                 self.getProfissionais();
@@ -187,17 +198,27 @@
             });
         };
 
+        self.showEdit = function(atendimento){
+            if((new Date() < new Date(atendimento.dtAtendimento))){
+                msgs.msgWarning('Data do atendimento superior a data atual');
+                return;
+            }
+            self.atendimento = atendimento;
+            self.setFieldsAtendimento(atendimento);
+            tabsFactory.showTabs(self, {tabCreate: true});
+        };
+
         self.showView = function(atendimento){
             self.atendimento = atendimento;
             self.setFieldsAtendimento(atendimento);
             console.log('Atendimento...', atendimento);
-            tabsFactory.showTabs(self, {tabDelete: true});
+            tabsFactory.showTabs(self, {tabUpdate: true});
         };
 
         self.showCancel = function(atendimento){
             self.atendimento = atendimento;
             self.setFieldsAtendimento(atendimento);
-            tabsFactory.showTabs(self, {tabUpdate: true});
+            tabsFactory.showTabs(self, {tabDelete: true});
         }
 
         self.setFieldsAtendimento = function(atendimento){

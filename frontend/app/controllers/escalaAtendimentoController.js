@@ -160,6 +160,9 @@
                 self.atendimento.paciente = response.data.paciente;
                 self.atendimento.descQueixa = 'Queixa: ';
                 self.atendimento.descDiagnostico = 'Diagnóstico: ';
+                self.atendimento.receituario = [{}];
+                self.atendimento.examesSolicitados = [{}];
+                self.atendimento.examesAvaliados = [{}];
 
                 $http.post(urls.atendimentos, self.atendimento).then(function(response){
                     console.log('Atendimento agendado com sucesso!');
