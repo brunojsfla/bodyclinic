@@ -4,25 +4,11 @@
         
         //Inicializações
         self.motivos = bcUtils.getMotivoSuspensaoEscala();
-        self.atendimentoAgendado = {};
-
-        self.getAtendimentoAgendadoByPeriodo = function(dtInicio, dtTermino, suspensao){
-            console.log('Data de início:', new Date(dtInicio));
-            console.log('Data de término:', new Date(dtTermino));
-            console.log('Suspensao:', suspensao);
-
-            $http.get(urls.atendimentos+'/?estado=AGENDADO&profissional='+suspensao.profissional._id).then(function(response){
-                console.log('Atendimentos agendados localizados: ', response.data);
-            }, function(response){
-                console.error('Erro ao buscar atendimentos agendados no período da suspensão: ',  response.data.errors);
-            });
-        };
 
         self.saveSuspensao = function(){
             // Validações 
             let dtInicio = new Date(self.suspensao.dtInicio);
             let dtTermino = new Date(self.suspensao.dtTermino);
-            self.getAtendimentoAgendadoByPeriodo(dtInicio, dtTermino, self.suspensao);
             
             //data de término ser maior que data de início
             if(dtTermino < dtInicio){
@@ -49,6 +35,49 @@
             }
                 
             $http.post(urls.suspensoes, self.suspensao).then(function(response){
+                $http.get(urls.atendimentos+'/?estado=AGENDADO&profissional='+self.suspensao.profissional._id).then(function(response){
+                    self.atendimentoAgendado = response.data.filter(function(atendimento){                      
+                        return new Date(atendimento.dtAtendimento) >= new Date(self.suspensao.dtInicio) && new Date(atendimento.dtAtendimento) <= new Date(self.suspensao.dtTermino);
+                    }, Object.create(null));
+
+                    console.log('Atendimentos na data da suspensão:', self.atendimentoAgendado);
+                    
+                    if(self.atendimentoAgendado instanceof Array){
+                        for(let i = 0; i < self.atendimentoAgendado.length; i++){
+                            self.atendimentoAgendado[i].estado = 'CANCELADO';
+                            self.atendimentoAgendado[i].dtCancelamento = new Date();
+                            self.atendimentoAgendado[i].descMotivoCancelamento = 'Supensão de escala do profissional';
+
+                            $http.put(urls.atendimentos+'/'+self.atendimentoAgendado[i]._id, self.atendimentoAgendado[i]).then(function(response){
+                                console.log('Atendimento ' + self.atendimentoAgendado[i]._id + 'cancelado com sucesso após suspensão de escala!');
+                                $http.delete(urls.escalas+'/'+self.atendimentoAgendado[i].escalaAtendimento).then(function(response){
+                                    console.log('Agenda excluída com sucesso após suspensão de escala');                
+                                }, function(response){
+                                    console.error('Erro ao excluir agenda após suspensão de escala: ', response.data);
+                                }); 
+                            }, function(response){
+                                console.error('Erro ao cancelar atendimento: ', response.data);
+                            });
+                        }
+                    }else{
+                        self.atendimentoAgendado.estado = 'CANCELADO';
+                        self.atendimentoAgendado.dtCancelamento = new Date();
+                        self.atendimentoAgendado.descMotivoCancelamento = 'Supensão de escala do profissional';
+
+                        $http.put(urls.atendimentos+'/'+self.atendimentoAgendado._id, self.atendimentoAgendado).then(function(response){
+                            console.log('Atendimento ' + self.atendimentoAgendado._id + 'cancelado com sucesso após suspensão de escala!');
+                            $http.delete(urls.escalas+'/'+self.atendimentoAgendado.escalaAtendimento).then(function(response){
+                                console.log('Agenda excluída com sucesso após suspensão de escala');                
+                            }, function(response){
+                                console.error('Erro ao excluir agenda após suspensão de escala: ', response.data);
+                            });     
+                        }, function(response){
+                            console.error('Erro ao cancelar atendimento: ', response.data);
+                        });
+                    }
+                }, function(response){
+                    console.error('Erro ao buscar atendimentos agendados no período da suspensão: ',  response.data.errors);
+                });
                 self.getSuspensoes();
                 msgs.msgSuccess('Suspensão de Escala salva com sucesso!');
             }, function(response){
@@ -58,6 +87,7 @@
         };
 
         self.getSuspensoes = function(){
+            self.atendimentoAgendado = {};
             $http.get(urls.suspensoes+'?sort=dtInicio').then(function(response){
                 console.log('Atualizando lista de suspensões de escala...');
                 self.suspensao = {};
@@ -147,7 +177,7 @@
         // Busca profissional por _id
         self.getProfissionalById = function(suspensao){
             if(suspensao){
-                $http.get(urls.profissionais + '/' + suspensao.profissional).then(function(response){
+                $http.get(urls.profissionais + '/' + suspensao.profissional._id).then(function(response){
                     self.suspensao.profissional = response.data;
                     self.profissional = response.data;
                 }, function(response){
