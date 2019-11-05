@@ -4,15 +4,35 @@
         
         //Inicializações
         self.motivos = bcUtils.getMotivoSuspensaoEscala();
+        self.atendimentoAgendado = {};
+
+        self.getAtendimentoAgendadoByPeriodo = function(dtInicio, dtTermino, suspensao){
+            console.log('Data de início:', new Date(dtInicio));
+            console.log('Data de término:', new Date(dtTermino));
+            console.log('Suspensao:', suspensao);
+
+            $http.get(urls.atendimentos+'/?estado=AGENDADO&profissional='+suspensao.profissional._id).then(function(response){
+                console.log('Atendimentos agendados localizados: ', response.data);
+            }, function(response){
+                console.error('Erro ao buscar atendimentos agendados no período da suspensão: ',  response.data.errors);
+            });
+        };
 
         self.saveSuspensao = function(){
             // Validações 
             let dtInicio = new Date(self.suspensao.dtInicio);
             let dtTermino = new Date(self.suspensao.dtTermino);
-            console.log('Data: ', dtInicio);
+            self.getAtendimentoAgendadoByPeriodo(dtInicio, dtTermino, self.suspensao);
+            
             //data de término ser maior que data de início
             if(dtTermino < dtInicio){
                 msgs.msgError('Data de término anterior a Data de Início.');
+                return;
+            }
+
+            //Data retroativa
+            if(dtInicio < new Date().setHours(0, 0, 0, 0)){
+                msgs.msgError('Impossível criar suspensão de escala com data retroativa.');
                 return;
             }
 
