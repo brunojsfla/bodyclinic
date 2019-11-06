@@ -4,6 +4,6 @@ const mongoose = restfull.mongoose;
 const procedimentoSchema = new mongoose.Schema({
     codProc : String,
     nome : String
-}, {collection : 'procedimentos'});
+}, {collection : 'procedimento'});
 
 module.exports = restfull.model('Procedimento', procedimentoSchema);

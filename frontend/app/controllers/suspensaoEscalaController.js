@@ -35,13 +35,15 @@
             }
                 
             $http.post(urls.suspensoes, self.suspensao).then(function(response){
+                // Busca atendimento agendado do profissional no período da suspensão
                 $http.get(urls.atendimentos+'/?estado=AGENDADO&profissional='+self.suspensao.profissional._id).then(function(response){
+                    // Filtro pelo período da suspensão
                     self.atendimentoAgendado = response.data.filter(function(atendimento){                      
                         return new Date(atendimento.dtAtendimento) >= new Date(self.suspensao.dtInicio) && new Date(atendimento.dtAtendimento) <= new Date(self.suspensao.dtTermino);
                     }, Object.create(null));
 
                     console.log('Atendimentos na data da suspensão:', self.atendimentoAgendado);
-                    
+                    //Checa o tipo do dado da resposta e marca o(s) atendimento(s) como cancelado e exclui o(s) agendamento(s)
                     if(self.atendimentoAgendado instanceof Array){
                         for(let i = 0; i < self.atendimentoAgendado.length; i++){
                             self.atendimentoAgendado[i].estado = 'CANCELADO';
@@ -119,6 +121,7 @@
 
         self.showRemove = function(suspensao){
             self.suspensao = suspensao;
+            console.log('Suspensão a ser excluída: ', self.suspensao);
             self.setFieldsSuspensao(suspensao);
             tabsFactory.showTabs(self, {tabDelete: true});
         };

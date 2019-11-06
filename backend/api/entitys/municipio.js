@@ -5,6 +5,6 @@ const municipioSchema = new mongoose.Schema({
     nome : {type: String, required : true},
     uf : {type: String, required : true},
     siglaUf : {type: String, required : true},
-});
+}, {collection : 'municipio'});
 
 module.exports = restfull.model('Municipio', municipioSchema);

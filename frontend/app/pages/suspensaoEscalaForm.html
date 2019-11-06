@@ -62,7 +62,25 @@
     <div class="box-footer">
         <button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate" ng-click="sCtrl.saveSuspensao()">Salvar</button>
         <button type="button" class="btn btn-info" ng-if="sCtrl.tabUpdate" ng-click="sCtrl.setSuspensao()">Atualizar</button>
-        <button type="button" class="btn btn-danger" ng-if="sCtrl.tabDelete" ng-click="sCtrl.deleteSuspensao()">Excluir</button>
+        <button type="button" class="btn btn-danger" ng-if="sCtrl.tabDelete" data-toggle="modal" data-target="#modal-info">Excluir</button>
         <button type="button" class="btn btn-default" ng-click="sCtrl.getSuspensoes()">Cancelar</button>
+    </div>
+</div>
+<div class="modal modal-info fade" id="modal-info" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Atenção!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Realmente deseja excluir o registro de suspensão de escala do profissional <b>{{ sCtrl.suspensao.profissional.nome }}</b>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" ng-click="sCtrl.getSuspensoes()">NÃO</button>
+                <button type="button" class="btn btn-outline" ng-click="sCtrl.deleteSuspensao()" data-dismiss="modal">SIM</button>
+            </div>
+        </div>
     </div>
 </div>

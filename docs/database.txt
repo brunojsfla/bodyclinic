@@ -1,0 +1,4 @@
+mongoimport -d body_clinic -c estado --type csv --headerline --file estado.csv
+mongoimport -d body_clinic -c municipio --type csv --headerline --file municipio.csv
+mongoimport -d body_clinic -c ocupacao --type csv --headerline --file cbo.csv
+mongoimport -d body_clinic -c procedimento --type csv --headerline --file proc.csv
