@@ -30,7 +30,8 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="date" class="form-control pull-right" id="dtTermino" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.dtTermino">
+                    <input type="date" class="form-control pull-right" id="dtTermino" ng-disabled="sCtrl.tabDelete" ng-model="sCtrl.suspensao.dtTermino"
+                        ng-change="sCtrl.getAtendimentoAgendandoByProfissional({profissional: sCtrl.suspensao.profissional, dtInicio: sCtrl.suspensao.dtInicio, dtTermino: sCtrl.suspensao.dtTermino})">
                 </div>
             </div>
         </div>
@@ -60,8 +61,8 @@
         </div>
     </div>
     <div class="box-footer">
-        <button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate && !sCtrl.atendimentoAgendado" ng-click="sCtrl.saveSuspensao()">Salvar</button>
-        <button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate && sCtrl.atendimentoAgendado && sCtrl.atendimentoAgendado.length > 0" data-toggle="modal" data-target="#modal-infoSave">Salvar Modal</button>
+        <button type="button" class="btn btn-primary" ng-if="(sCtrl.tabCreate && sCtrl.atendimentoAgendado && sCtrl.atendimentoAgendado.length == 0) || (sCtrl.tabCreate && !sCtrl.atendimentoAgendado)" ng-click="sCtrl.saveSuspensao()">Salvar</button>
+        <button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate && sCtrl.atendimentoAgendado && sCtrl.atendimentoAgendado.length > 0" data-toggle="modal" data-target="#modal-infoSave">Salvar</button>
         <!--<button type="button" class="btn btn-primary" ng-if="sCtrl.tabCreate" ng-click="sCtrl.saveSuspensao()">Salvar</button>-->
         <button type="button" class="btn btn-info" ng-if="sCtrl.tabUpdate" ng-click="sCtrl.setSuspensao()">Atualizar</button>
         <button type="button" class="btn btn-danger" ng-if="sCtrl.tabDelete" data-toggle="modal" data-target="#modal-infoDelete">Excluir</button>

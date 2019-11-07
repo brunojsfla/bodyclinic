@@ -4,8 +4,51 @@
         
         //Inicializações
         self.motivos = bcUtils.getMotivoSuspensaoEscala();
+        self.diasSemana = bcUtils.getDiasSemana();
+
+        self.sendMail = function(atendimento){
+            console.log('Atendimento...', atendimento);
+            console.log('Preparando e-mail...');
+            //msgs.msgInfo('Preparando e-mail...');
+            try {
+                if(atendimento.paciente.email){
+                    let dtAtendimento = new Date(atendimento.dtAtendimento);
+                    let conteudo = "";
+                    let diaSemana = self.diasSemana[dtAtendimento.getDay()].nome;
+
+                    conteudo = `<b>Olá, ${atendimento.paciente.nome}!</b><br><p><i>Este é um e-mail de envio automático, não é necessário respondê-lo.</i></p>  
+                    <p>Informamos que sua consulta agendadada para ${diaSemana}, ${dtAtendimento.getDate()}/${dtAtendimento.getMonth() + 1}/${dtAtendimento.getFullYear()} - ${atendimento.horaAtendimento.substr(0, 2)}:${atendimento.horaAtendimento.substr(2, 2)} hora(s),
+                    com o profissional ${atendimento.profissional.nome} - ${atendimento.ocupacao.nome}, foi <strong>CANCELADA</strong>.</p>
+                    <p>Att,</p>
+                    <p>Equipe Body Clinic</p>`;
+                    
+                    let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
+                                    to: atendimento.paciente.email,
+                                    cc: 'lorenascferreira12@gmail.com', 
+                                    subject: 'Body Clinic',
+                                    html: conteudo};
+                
+                    $http.post(urls.email, mailInfo).then(function(response){
+                        //msgs.msgSuccess('E-mail enviado com sucesso!');
+                        console.log('E-mail enviado com sucesso!');
+                    }).catch(function(error){
+                        //msgs.msgError('Não foi possível enviar e-mail!');
+                        console.error('Falha ao enviar e-mail:', error);
+                    });
+                }else{
+                    console.log(`Não foi possível enviar pois o(a) paciente ${atendimento.paciente.nome} não possui e-mail cadastrado.`);
+                }
+            }
+            catch(err) {
+                console.error('Falha ao enviar e-mail:', err);
+                //msgs.msgError('Falha ao enviar e-mail!');
+            }
+            
+        };
 
         self.getAtendimentoAgendandoByProfissional = function(suspensao){
+            console.log('ChangeHander Data termino:', suspensao);
+            self.atendimentoAgendado = {};
             $http.get(urls.atendimentos+'/?estado=AGENDADO&profissional='+suspensao.profissional._id).then(function(response){
                 // Filtro pelo período da suspensão
                 self.atendimentoAgendado = response.data.filter(function(atendimento){                      
@@ -20,38 +63,42 @@
         };
 
         self.saveSuspensao = function(){
-            // Validações 
-            let dtInicio = new Date(self.suspensao.dtInicio);
-            let dtTermino = new Date(self.suspensao.dtTermino);
-            
-            //data de término ser maior que data de início
-            if(dtTermino < dtInicio){
-                msgs.msgError('Data de término anterior a Data de Início.');
-                return;
-            }
+            // Validações
+            if(Object.keys(self.suspensao).length > 0){
+                
+                let dtInicio = new Date(self.suspensao.dtInicio);
+                let dtTermino = new Date(self.suspensao.dtTermino);
+                
+                //data de término ser maior que data de início
+                if(dtTermino < dtInicio){
+                    msgs.msgError('Data de término anterior a Data de Início.');
+                    return;
+                }
 
-            //Data retroativa
-            if(dtInicio < new Date().setHours(0, 0, 0, 0)){
-                msgs.msgError('Impossível criar suspensão de escala com data retroativa.');
-                return;
-            }
+                //Data retroativa
+                if(dtInicio < new Date().setHours(0, 0, 0, 0)){
+                    msgs.msgError('Impossível criar suspensão de escala com data retroativa.');
+                    return;
+                }
 
-            //suspensão para o mesmo período e mesmo profissional
-            for(let i = 0; i < self.suspensoes.length; i++){
-                let dtInicioAux = new Date(self.suspensoes[i].dtInicio);
-                let dtTerminoAux = new Date(self.suspensoes[i].dtTermino);
-                if(self.suspensao.profissional._id === self.suspensoes[i].profissional._id){
-                    if(dtInicio >= dtInicioAux && dtInicio <= dtTerminoAux){
-                        msgs.msgError(`O profissional ${self.suspensoes[i].profissional.nome} já possui uma suspensão de escala por motivo de ${self.suspensoes[i].motivo} para o período informado.`);
-                        return;
+                //suspensão para o mesmo período e mesmo profissional
+                for(let i = 0; i < self.suspensoes.length; i++){
+                    let dtInicioAux = new Date(self.suspensoes[i].dtInicio);
+                    let dtTerminoAux = new Date(self.suspensoes[i].dtTermino);
+                    if(self.suspensao.profissional._id === self.suspensoes[i].profissional._id){
+                        if(dtInicio >= dtInicioAux && dtInicio <= dtTerminoAux){
+                            msgs.msgError(`O profissional ${self.suspensoes[i].profissional.nome} já possui uma suspensão de escala por motivo de ${self.suspensoes[i].motivo} para o período informado.`);
+                            return;
+                        }
                     }
                 }
-            }
 
-            self.getAtendimentoAgendandoByProfissional(self.suspensao);
+                self.getAtendimentoAgendandoByProfissional(self.suspensao);
+            }
                 
             $http.post(urls.suspensoes, self.suspensao).then(function(response){
                 //Checa o tipo do dado da resposta e marca o(s) atendimento(s) como cancelado e exclui o(s) agendamento(s)
+                console.log('Atendimentos na data da suspensão no método post:', self.atendimentoAgendado);
                 if(self.atendimentoAgendado){
                     if(self.atendimentoAgendado instanceof Array){
                         for(let i = 0; i < self.atendimentoAgendado.length; i++){
@@ -61,6 +108,7 @@
     
                             $http.put(urls.atendimentos+'/'+self.atendimentoAgendado[i]._id, self.atendimentoAgendado[i]).then(function(response){
                                 console.log('Atendimento ' + self.atendimentoAgendado[i]._id + ' cancelado com sucesso após suspensão de escala!');
+                                
                                 $http.delete(urls.escalas+'/'+self.atendimentoAgendado[i].escalaAtendimento).then(function(response){
                                     console.log('Agenda excluída com sucesso após suspensão de escala');                
                                 }, function(response){
@@ -77,6 +125,7 @@
     
                         $http.put(urls.atendimentos+'/'+self.atendimentoAgendado._id, self.atendimentoAgendado).then(function(response){
                             console.log('Atendimento ' + self.atendimentoAgendado._id + ' cancelado com sucesso após suspensão de escala!');
+                            self.sendMail(self.atendimentoAgendado.paciente, self.atendimentoAgendado.profissional, self.atendimentoAgendado.ocupacao, self.atendimentoAgendado.dtAtendimento, self.atendimentoAgendado.horaAtendimento);
                             $http.delete(urls.escalas+'/'+self.atendimentoAgendado.escalaAtendimento).then(function(response){
                                 console.log('Agenda excluída com sucesso após suspensão de escala');                
                             }, function(response){
@@ -85,7 +134,8 @@
                         }, function(response){
                             console.error('Erro ao cancelar atendimento: ', response.data);
                         });
-                    }   
+                    }
+                       
                 }             
                 self.getSuspensoes();
                 msgs.msgSuccess('Suspensão de Escala salva com sucesso!');
@@ -96,7 +146,7 @@
         };
 
         self.getSuspensoes = function(){
-            self.atendimentoAgendado = undefined;
+            //self.atendimentoAgendado = undefined;
             $http.get(urls.suspensoes+'?sort=dtInicio').then(function(response){
                 console.log('Atualizando lista de suspensões de escala...');
                 self.suspensao = {};
@@ -192,6 +242,28 @@
                     self.profissional = response.data;
                 }, function(response){
                     console.error('Falha ao recuperar profissional: ', response.data);
+                });
+            }
+        };
+
+        // Busca profissional por _id
+        self.getProfissionalByIdEmail = function(atendimento){
+            if(atendimento){
+                $http.get(urls.profissionais + '/' + atendimento.profissional).then(function(response){
+                    self.atendimentoAgendado.profissional = response.data;
+                }, function(response){
+                    console.error('Falha ao recuperar profissional para envio do e-mail: ', response.data);
+                });
+            }
+        };
+
+        // Busca paciente por _id
+        self.getPacienteByIdEmail = function(atendimento){
+            if(atendimento){
+                $http.get(urls.pacientes + '/' + atendimento.paciente).then(function(response){
+                    self.atendimentoAgendado.paciente = response.data;
+                }, function(response){
+                    console.error('Falha ao recuperar paciente para envio de e-mail: ', response.data);
                 });
             }
         };
