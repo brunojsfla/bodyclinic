@@ -63,7 +63,25 @@
     <div class="box-footer">
         <button type="button" class="btn btn-primary" ng-if="eaCtrl.tabCreate" ng-click="eaCtrl.saveEscala()">Salvar</button>
         <!--<button type="button" class="btn btn-info" ng-if="eaCtrl.tabUpdate" ng-click="eaCtrl.setEscala()">Atualizar</button>-->
-        <button type="button" class="btn btn-danger" ng-if="eaCtrl.tabDelete" ng-click="eaCtrl.deleteEscala()">Excluir</button>
+        <button type="button" class="btn btn-danger" ng-if="eaCtrl.tabDelete" data-toggle="modal" data-target="#modal-infoDelete">Excluir</button>
         <button type="button" class="btn btn-default" ng-click="eaCtrl.start()">Cancelar</button>
+    </div>
+</div>
+<div class="modal modal-info fade" id="modal-infoDelete" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Atenção!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Realmente deseja cancelar o agendamento do paciente <b>{{ eaCtrl.escala.paciente.nome }}</b>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal" ng-click="eaCtrl.start()">NÃO</button>
+                <button type="button" class="btn btn-outline" ng-click="eaCtrl.deleteEscala()" data-dismiss="modal">SIM</button>
+            </div>
+        </div>
     </div>
 </div>
