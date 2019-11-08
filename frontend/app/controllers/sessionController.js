@@ -4,8 +4,8 @@
         const self = this;
         self.user = self.user = {nome: 'Bruno', email: 'brunojsfla@gmail.com', perfil: 'PROFISSIONAL'};
         
-        self.getUser = function(){
-            
+        self.login = function(){
+            msgs.msgSuccess('Sucesso no login!');
         };
 
         self.logout = function(){
