@@ -1,6 +1,15 @@
 const express = require('express');
 
 module.exports = function(server){
+
+    const openApi = express.Router();
+    server.use('/oapibc', openApi);
+
+    const AuthService = require('../api/services/authService');
+
+    openApi.post('/login', AuthService.login);
+    openApi.post('/validatetoken', AuthService.validateToken);
+    
     const rt = express.Router();
     server.use('/apibc', rt);
 

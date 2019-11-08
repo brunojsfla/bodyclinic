@@ -1,11 +1,10 @@
 (function(){
-    app.controller('SessionController', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
+    app.controller('SessionController', ['$http', 'urls', 'msgs', 'authFactory', '$location', function($http, urls, msgs, authFactory, $location){
         
         const self = this;
-        self.user = self.user = {nome: 'Bruno', email: 'brunojsfla@gmail.com', perfil: 'PROFISSIONAL'};
-        
+                        
         self.login = function(){
-            msgs.msgSuccess('Sucesso no login!');
+            authFactory.login(self.user, err => err ? msgs.msgError(err) : msgs.msgSuccess('Sucesso!'));
         };
 
         self.logout = function(){

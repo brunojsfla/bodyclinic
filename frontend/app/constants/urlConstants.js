@@ -11,6 +11,8 @@
         escalas: 'http://localhost:3005/apibc/escalas',
         medicamentos: 'http://localhost:3005/apibc/medicamentos',
         atendimentos: 'http://localhost:3005/apibc/atendimentos',
-        email: 'http://localhost:3005/sendmail'
+        email: 'http://localhost:3005/sendmail',
+        oapi: 'http://localhost:3005/oapibc',
+        userKey: '_body_clinic_puc'
     });
 })()
