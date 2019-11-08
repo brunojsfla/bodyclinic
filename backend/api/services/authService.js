@@ -4,8 +4,6 @@ const bcrypt = require('bcrypt');
 const usuario = require('../entitys/usuario');
 const env = require('../../.env');
 
-const emailRegex = /\S+@\S+\.\S+/;
-
 const sendErrorsFromDB = (res, dbErrors) =>{
     const errors = [];
     _.forIn(dbErrors.errors, error => errors.push(error.message));
@@ -16,22 +14,24 @@ const sendErrorsFromDB = (res, dbErrors) =>{
 const login = (req, res, next) => {
     const email = req.body.email || '';
     const senha = req.body.senha || '';
-    console.log('Email', email);
-    console.log('Senha', senha);
-
+  
     usuario.findOne({email}, (err, user) => {
         if(err){
             return sendErrorsFromDB(res, err);
         }else 
             if(user){
-                const token = jwt.sign(user, env.authSecret, {
-                    expiresIn: '1 day'
-                });
-                
-                const { nome, email, perfil } = user;
-                res.json({ nome, email, perfil, token });
+                if(user.senha === senha){
+                    const token = jwt.sign(user, env.authSecret, {
+                        expiresIn: '1 day'
+                    });
+                    
+                    const { nome, email, perfil } = user;
+                    res.json({ nome, email, perfil, token });
+                }else{
+                    return res.status(400).send({errors: ['Usuário ou senha invalidos!']});
+                }
             }else{
-                return res.status(400).send({errors: ['Usuário ou senha inválidos!']});
+                return res.status(400).send({errors: ['Usuário não existe na base de dados!']});
             }
             
     });

@@ -4,11 +4,15 @@
         const self = this;
                         
         self.login = function(){
-            authFactory.login(self.user, err => err ? msgs.msgError(err) : msgs.msgSuccess('Sucesso!'));
+            authFactory.login(self.user, err => err ? msgs.msgError(err) : msgs.msgSuccess('Sucesso Login!'));
         };
 
         self.logout = function(){
-            alert('Sair da APP');
+            authFactory.logout(() => msgs.msgSuccess('Sucesso Logout!'));
+        };
+
+        self.user = function(){
+            authFactory.getUser();
         };
 
     }]);
