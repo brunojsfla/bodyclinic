@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('./auth');
 
 module.exports = function(server){
 
@@ -12,6 +13,8 @@ module.exports = function(server){
     
     const rt = express.Router();
     server.use('/apibc', rt);
+
+    rt.use(auth);
 
     //Rota Estados
     const estadoService = require('../api/services/estadoService');

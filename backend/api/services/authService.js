@@ -12,6 +12,7 @@ const sendErrorsFromDB = (res, dbErrors) =>{
 };
 
 const login = (req, res, next) => {
+    console.log('Entrou...');
     const email = req.body.email || '';
     const senha = req.body.senha || '';
   
@@ -31,7 +32,7 @@ const login = (req, res, next) => {
                     return res.status(400).send({errors: ['Usuário ou senha invalidos!']});
                 }
             }else{
-                return res.status(400).send({errors: ['Usuário não existe na base de dados!']});
+                return res.status(400).send({errors: ['Usuário ou senha invalidos!']});
             }
             
     });

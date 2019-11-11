@@ -1,7 +1,8 @@
 (function(){
-    app.factory('authFactory', ['$http', 'urls', function($http, urls){
+    app.factory('authFactory', ['$http', 'urls', '$rootScope', function($http, urls, $rootScope){
         
         let user = null;
+        $rootScope.usuarioLogado = null;
 
         function getUser(){
             if(!user){
@@ -17,21 +18,21 @@
         function logout(callback){
             localStorage.removeItem(urls.userKey);
             $http.defaults.headers.common.Authorization = '';
+            $rootScope.usuarioLogado = null;
             if(callback) callback(null);
         };
 
         function submit(url, user, callback){
             $http.post(urls.oapi+'/'+url, user).then(function(response){
-                console.log('Resposta:', response);
+                $rootScope.usuarioLogado = response.data;
                 localStorage.setItem(urls.userKey, JSON.stringify(response.data));
                 $http.defaults.headers.common.Authorization = response.data.token;
                 if (callback) callback(null, response.data);
             }, function(response){
-                console.log('Resposta com erro:', response);
                 if (callback) callback(response, null)
             });
         };
 
-        return { login, logout, getUser };
+        return { login, logout };
     }]);
 })();
