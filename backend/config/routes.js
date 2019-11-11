@@ -14,7 +14,7 @@ module.exports = function(server){
     const rt = express.Router();
     server.use('/apibc', rt);
 
-    rt.use(auth);
+    //rt.use(auth);
 
     //Rota Estados
     const estadoService = require('../api/services/estadoService');

@@ -1,5 +1,5 @@
 (function(){
-    app.controller('UsuarioCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
+    app.controller('UsuarioCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', '$rootScope', function($http, urls, msgs, tabsFactory, bcUtils, $rootScope){
         const self = this;
 
         //Inicializações

@@ -2,12 +2,13 @@
     app.factory('authFactory', ['$http', 'urls', '$rootScope', function($http, urls, $rootScope){
         
         let user = null;
-        $rootScope.usuarioLogado = null;
+        //$rootScope.usuarioLogado = null;
 
         function getUser(){
             if(!user){
                 user = JSON.parse(localStorage.getItem(urls.userKey));
-                console.log('Usuario logado:', user);
+                console.log('Usuario logado factory:', user);
+                return user;
             }
         };
         
@@ -19,20 +20,20 @@
             localStorage.removeItem(urls.userKey);
             $http.defaults.headers.common.Authorization = '';
             $rootScope.usuarioLogado = null;
+            user = null
             if(callback) callback(null);
         };
 
         function submit(url, user, callback){
             $http.post(urls.oapi+'/'+url, user).then(function(response){
-                $rootScope.usuarioLogado = response.data;
                 localStorage.setItem(urls.userKey, JSON.stringify(response.data));
                 $http.defaults.headers.common.Authorization = response.data.token;
                 if (callback) callback(null, response.data);
             }, function(response){
-                if (callback) callback(response, null)
+                if (callback) callback(response.data.errors, null);
             });
         };
 
-        return { login, logout };
+        return { login, logout, getUser };
     }]);
 })();

@@ -13,13 +13,13 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li ng-if="seCtrl.user.perfil !== 'PROFISSIONAL'"><a ui-sref="paciente"><i class="fa fa-user-plus"></i>Pacientes</a></li>
-                <li ng-if="seCtrl.user.perfil !== 'PROFISSIONAL'"><a ui-sref="profissional"><i class="fa fa-user-md"></i>Profissionais</a></li>
-                <li ng-if="seCtrl.user.perfil !== 'AUXILIAR'"><a ui-sref="atendimento"><i class="fa fa-heartbeat"></i>Atendimento</a></li>
-                <li ng-if="seCtrl.user.perfil !== 'PROFISSIONAL'"><a ui-sref="medicamento"><i class="fa fa-medkit"></i>Medicamentos</a></li>
+                <li ng-if="seCtrl.user.perfil != 'PROFISSIONAL'"><a ui-sref="paciente"><i class="fa fa-user-plus"></i>Pacientes</a></li>
+                <li ng-if="seCtrl.user.perfil != 'PROFISSIONAL'"><a ui-sref="profissional"><i class="fa fa-user-md"></i>Profissionais</a></li>
+                <li ng-if="seCtrl.user.perfil != 'AUXILIAR'"><a ui-sref="atendimento"><i class="fa fa-heartbeat"></i>Atendimento</a></li>
+                <li ng-if="seCtrl.user.perfil != 'PROFISSIONAL'"><a ui-sref="medicamento"><i class="fa fa-medkit"></i>Medicamentos</a></li>
             </ul>
         </li>
-        <li class="treeview" ng-if="seCtrl.user.perfil !== 'PROFISSIONAL'">
+        <li class="treeview" ng-if="seCtrl.user.perfil != 'PROFISSIONAL'">
             <a href>
                 <i class="fa  fa-calendar-o"></i>
                 <span>Agenda</span>
@@ -33,7 +33,7 @@
                 <!--<li><a ui-sref="agendamento"><i class="fa fa-calendar"></i>Agendamento</a></li>-->
             </ul>
         </li>
-        <li ng-if="seCtrl.user.perfil === 'ADMINISTRADOR'">
+        <li ng-if="seCtrl.user.perfil == 'ADMINISTRADOR'">
             <a ui-sref="usuario">
                 <i class="fa fa-laptop"></i><span>Usuários</span>
             </a>
