@@ -1,5 +1,5 @@
 (function(){
-    app.controller('AtendimentoCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
+    app.controller('AtendimentoCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', '$rootScope', function($http, urls, msgs, tabsFactory, bcUtils, $rootScope){
         const self = this;
 
         //Inicializações
@@ -283,6 +283,13 @@
                     console.log('Stringify: ', JSON.stringify(profissional));
                     return !this[JSON.stringify(profissional.cpf)] && (this[JSON.stringify(profissional.cpf)] = true) && !profissional.dtDemissao;
                 }, Object.create(null));
+
+                if($rootScope.usuarioLogado.perfil === 'PROFISSIONAL'){
+                    self.profissionais = self.profissionais.filter(function(profissional){
+                        return profissional.cpf === $rootScope.usuarioLogado.cpf;
+                    }, Object.create(null));
+
+                }
                 console.log('Profissionais retornados para atendimento: ' + self.profissionais.length);
             }, function(response){
                 console.log('Erro ao buscar profissionais: ',  response.data.errors);

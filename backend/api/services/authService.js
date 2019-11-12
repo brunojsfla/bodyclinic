@@ -26,8 +26,8 @@ const login = (req, res, next) => {
                         expiresIn: '1 day'
                     });
                     
-                    const { nome, email, perfil } = user;
-                    res.json({ nome, email, perfil, token });
+                    const { nome, email, perfil, cpf } = user;
+                    res.json({ nome, email, perfil, cpf, token });
                 }else{
                     return res.status(400).send({errors: ['Usuário ou senha invalidos!']});
                 }
