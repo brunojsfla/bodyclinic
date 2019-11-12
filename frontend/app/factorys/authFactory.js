@@ -2,7 +2,6 @@
     app.factory('authFactory', ['$http', 'urls', '$rootScope', function($http, urls, $rootScope){
         
         let user = null;
-        //$rootScope.usuarioLogado = null;
 
         function getUser(){
             if(!user){
@@ -19,7 +18,6 @@
         function logout(callback){
             localStorage.removeItem(urls.userKey);
             $http.defaults.headers.common.Authorization = '';
-            $rootScope.usuarioLogado = null;
             user = null
             if(callback) callback(null);
         };

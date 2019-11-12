@@ -10,12 +10,12 @@
             <li class="dropdown user user-menu">
                 <a href class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="assets/user.jpg" class="user-image" alt="Usuário">
-                    <span class="hidden-xs">{{ seCtrl.user.nome }} - <small>{{ seCtrl.user.perfil }}</small></span>
+                    <span class="hidden-xs">{{ seCtrl.getUser() ? seCtrl.getUser().nome : 'undefined' }} - <small>{{ seCtrl.getUser() ? seCtrl.getUser().perfil : 'undefined' }}</small></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="user-header">
                         <img src="assets/user.jpg" class="img-circle" alt="Usuário">
-                        <p>{{ seCtrl.user.nome }}<small>{{ seCtrl.user.email }}</small></p>
+                        <p>{{ seCtrl.getUser() ? seCtrl.getUser() : 'undefined' }}</small></p>
                     </li>
                     <li class="user-footer">
                         <div class="pull-rigth">

@@ -3,7 +3,7 @@
 
             $stateProvider.state('home', {
                 url: "/home",
-                templateUrl: "pages/home.html"
+                templateUrl: "pages/home.html",
             }).state('paciente', {
                 url: "/paciente",
                 templateUrl: "pages/paciente.html"
@@ -31,6 +31,14 @@
             });
 
             $urlRouterProvider.otherwise('/home');
-        }
-    ]);
+        }]).run(['$rootScope', 'authFactory', '$window', function ($rootScope, authFactory, $window) {
+
+                const isLoginPage = window.location.pathname === '/login.html';
+                const getCurrentUser = authFactory.getUser();
+
+                if(!getCurrentUser && !isLoginPage){
+                    $window.location.href = '/login.html';
+                }
+            }
+        ]);
 })();

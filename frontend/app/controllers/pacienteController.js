@@ -24,6 +24,8 @@
         };
 
         self.getPacientes = function(){
+            self.usuario = JSON.parse(localStorage.getItem(urls.userKey));
+            console.log(self.usuario);
             $http.get(urls.pacientes).then(function(response){
                 console.log('Atualizando lista de pacientes...');
                 self.paciente = {};
