@@ -3,7 +3,7 @@
 
             $stateProvider.state('home', {
                 url: "/home",
-                templateUrl: "pages/home.html",
+                templateUrl: "pages/home.html"
             }).state('paciente', {
                 url: "/paciente",
                 templateUrl: "pages/paciente.html"
@@ -35,6 +35,8 @@
 
                 const isLoginPage = window.location.pathname === '/login.html';
                 const getCurrentUser = authFactory.getUser();
+                console.log('Página de Login:', isLoginPage);
+                console.log('Usuário corrente:', getCurrentUser);
 
                 if(!getCurrentUser && !isLoginPage){
                     $window.location.href = '/login.html';

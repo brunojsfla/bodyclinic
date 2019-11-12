@@ -8,7 +8,7 @@
         };
 
         self.logout = function(){
-            authFactory.logout(() => window.location.pathname = '/login.html');
+            authFactory.logout(() => window.location.href = '/login.html');
         };
 
         self.getUser = () => authFactory.getUser();
