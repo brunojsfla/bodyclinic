@@ -59,7 +59,7 @@
 <div class="col-xs-12 col-sm-12">
     <div class="form-group">
         <button class="btn btn-primary" 
-            ng-click="aCtrl.getAtendimentos({profissional: aCtrl.filter.profissional, paciente: aCtrl.filter.paciente, dtInicio: aCtrl.filter.dtInicio, dtFinal: aCtrl.filter.dtFinal, estado: aCtrl.filter.estado})">Pesquisar</button>
+            ng-click="usuarioLogado.perfil !== 'PROFISSIONAL' ? aCtrl.getAtendimentos({profissional: aCtrl.filter.profissional, paciente: aCtrl.filter.paciente, dtInicio: aCtrl.filter.dtInicio, dtFinal: aCtrl.filter.dtFinal, estado: aCtrl.filter.estado}) : aCtrl.getAtendimentosByProfissional({paciente: aCtrl.filter.paciente, dtInicio: aCtrl.filter.dtInicio, dtFinal: aCtrl.filter.dtFinal, estado: aCtrl.filter.estado})">Pesquisar</button>
         <button class="btn btn-warning" ng-click="aCtrl.clearFilters()">Limpar</button>
     </div>
 </div>  

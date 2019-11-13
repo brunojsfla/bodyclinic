@@ -66,7 +66,7 @@
                     
                     let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
                                     to: atendimento.paciente.email,
-                                    cc: 'lorenascferreira12@gmail.com', 
+                                    cc: $rootScope.usuarioLogado.email, 
                                     subject: 'Body Clinic',
                                     //text: `Olá, ${atendimento.paciente.nome}! Segue abaixo seu receituário `,
                                     html: conteudo,
@@ -96,17 +96,23 @@
             self.filter.dtFinal = new Date();
             self.filter.estado = undefined;
             self.filter.paciente = undefined;
-            self.filter.profissional = undefined;
-
-            self.getAtendimentos();
-
+            if($rootScope.usuarioLogado.perfil !== 'PROFISSIONAL'){
+                self.filter.profissional = undefined;
+                self.getAtendimentos();
+            }else{
+                self.getAtendimentosByProfissional();
+            }
         };
 
         self.saveAtendimento = function(){
             if(self.atendimento.estado = 'AGENDADO'){
                 self.atendimento.estado = 'CONCLUÍDO';
                 $http.put(urls.atendimentos+'/'+self.atendimento._id, self.atendimento).then(function(response){
-                    self.getAtendimentos();
+                    if($rootScope.usuarioLogado.perfil !== 'PROFISSIONAL'){
+                        self.getAtendimentos();
+                    }else{
+                        self.getAtendimentosByProfissional();
+                    }
                     msgs.msgSuccess('Atendimento salvo com sucesso!');
                 }, function(response){
                     msgs.msgError(response.data.errors);
@@ -115,13 +121,104 @@
             }else{
                 self.atendimento.estado = 'CONCLUÍDO';
                 $http.post(urls.atendimentos, self.atendimento).then(function(response){
-                    self.getAtendimentos();
+                    if(!$rootScope.usuarioLogado.perfil !== 'PROFISSIONAL'){
+                        self.getAtendimentos();
+                    }else{
+                        self.getAtendimentosByProfissional();
+                    };
                     msgs.msgSuccess('Atendimento salvo com sucesso!');
                 }, function(response){
                     msgs.msgError(response.data.errors);
                     console.error('Erro ao salvar atendimento: ', response.data);
                 });
             }            
+        };
+
+        self.getAtendimentosByProfissional = function(obj){
+            $http.get(urls.profissionais+'?cpf='+$rootScope.usuarioLogado.cpf).then(function(response){
+                console.log('Atualizando profissional logado...');
+                self.profissionalLogado = {};
+                
+                if(response.data instanceof Array){
+                    self.profissionalLogado = response.data[0];
+                }else{
+                    self.profissionalLogado = response.data;
+                }
+                $http.get(urls.atendimentos+'?sort=dtAtendimento&profissional='+self.profissionalLogado._id).then(function(response){
+                    console.log('Atualizando lista de atendimentos...');
+                    
+                    self.atendimento = {examesAvaliados: [{}], examesSolicitados: [{}], receituario: [{}]};
+                    let atendimentoAux = response.data; 
+                    for(let i = 0; i < atendimentoAux.length; i++){
+                        //Paciente
+                        $http.get(urls.pacientes + '/' + atendimentoAux[i].paciente).then(function(response){
+                            for(let j = 0; j < atendimentoAux.length; j++){
+                                if(response.data._id === atendimentoAux[j].paciente)
+                                    atendimentoAux[j].paciente = response.data;
+                            }
+                        }, function(response){
+                            console.error('Falha ao recuperar paciente para lista de atendimento: ', response.data);
+                        });
+    
+                        //Profissional
+                        $http.get(urls.profissionais + '/' + atendimentoAux[i].profissional).then(function(response){
+                            for(let j = 0; j < atendimentoAux.length; j++){
+                                if(response.data._id === atendimentoAux[j].profissional)
+                                    atendimentoAux[j].profissional = response.data;
+                            }
+                        }, function(response){
+                            console.error('Falha ao recuperar profissional para lista de atendimento: ', response.data);
+                        });
+    
+                        //Ocupação
+                        $http.get(urls.ocupacoes + '/' + atendimentoAux[i].ocupacao).then(function(response){
+                            for(let j = 0; j < atendimentoAux.length; j++){
+                                if(response.data._id === atendimentoAux[j].ocupacao)
+                                    atendimentoAux[j].ocupacao = response.data;
+                            }
+                        }, function(response){
+                            console.error('Falha ao recuperar ocupação para lista de atendimento: ', response.data);
+                        });
+                    }
+    
+                    console.log('Aplicando filtros para pesquisa...');
+                    console.log('Filtros...', obj);
+                    if(obj){
+                        atendimentoAux = response.data.filter(function(atendimento){
+                            let isDtInicio = (obj.dtInicio ? true : false);
+                            let isDtFinal = (obj.dtFinal ? true : false);
+                            let isEstado = (obj.estado ? true : false);
+                            let isPaciente = (obj.paciente ? true : false);                           
+    
+                            return (isDtInicio&&isDtFinal ? new Date(atendimento.dtAtendimento) >= new Date(obj.dtInicio).setHours(0, 0) && new Date(atendimento.dtAtendimento) <= new Date(obj.dtFinal).setHours(23, 59) : atendimento)
+                                && (isEstado ? atendimento.estado === obj.estado.nome : atendimento) 
+                                && (isPaciente ? atendimento.paciente === obj.paciente._id : atendimento);
+                                //&& (atendimento.profissional === self.profissionalLogado._id);
+                        }, Object.create(null));
+    
+                    }
+    
+                    if(obj && atendimentoAux.length < 1){
+                        msgs.msgInfo('A pesquisa não encontrou resultados com  base nos paramêtros informados.');
+                    }
+    
+                    self.atendimentos = atendimentoAux;
+                    tabsFactory.showTabs(self, {tabList: true});
+                    self.atendimento.dtAtendimento = new Date();
+                    //Inicalização dos objetos necessários
+                    self.getProfissionais();
+                    self.getPacientes();
+                    self.getMedicamentos();
+                    self.getProcedimentos();
+                    console.log('Atendimentos retornados : ' + self.atendimentos.length);
+                }, function(response){
+                    console.log('Erro ao buscar atendimentos: ',  response.data.errors);
+                });
+                
+                console.log('Profissional logado: ' + self.profissionalLogado);
+            }, function(response){
+                console.log('Erro ao buscar profissional logado: ',  response.data.errors);
+            });            
         };
 
         self.getAtendimentos = function(obj){
@@ -262,7 +359,11 @@
             self.atendimento.estado = 'CANCELADO';
             const urlUpdate = `${urls.atendimentos}/${self.atendimento._id}`;
             $http.put(urlUpdate, self.atendimento).then(function(response){
-                self.getAtendimentos();
+                if($rootScope.usuarioLogado.perfil !== 'PROFISSIONAL'){
+                    self.getAtendimentos();
+                }else{
+                    self.getAtendimentosByProfissional();
+                }
                 msgs.msgSuccess('Atendimento cancelado com sucesso!');    
             }, function(response){
                 msgs.msgError(response.data.errors);
@@ -284,12 +385,12 @@
                     return !this[JSON.stringify(profissional.cpf)] && (this[JSON.stringify(profissional.cpf)] = true) && !profissional.dtDemissao;
                 }, Object.create(null));
 
-                if($rootScope.usuarioLogado.perfil === 'PROFISSIONAL'){
+                /*if($rootScope.usuarioLogado.perfil === 'PROFISSIONAL'){
                     self.profissionais = self.profissionais.filter(function(profissional){
                         return profissional.cpf === $rootScope.usuarioLogado.cpf;
                     }, Object.create(null));
 
-                }
+                }*/
                 console.log('Profissionais retornados para atendimento: ' + self.profissionais.length);
             }, function(response){
                 console.log('Erro ao buscar profissionais: ',  response.data.errors);
@@ -580,7 +681,10 @@
             }
         
         };
-
-        self.getAtendimentos();
+        if($rootScope.usuarioLogado.perfil === 'PROFISSIONAL'){
+            self.getAtendimentosByProfissional();
+        }else{
+            self.getAtendimentos();
+        }
     }]);
 })()

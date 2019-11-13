@@ -1,5 +1,5 @@
 (function(){
-    app.controller('EscalaAtendimentoCtrl', ['$scope', '$timeout', '$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($scope, $timeout, $http, urls, msgs, tabsFactory, bcUtils){
+    app.controller('EscalaAtendimentoCtrl', ['$scope', '$timeout', '$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', '$rootScope', function($scope, $timeout, $http, urls, msgs, tabsFactory, bcUtils, $rootScope){
         const self = this;
         
         //Inicializações
@@ -41,7 +41,7 @@
                     
                     let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
                                     to: escala.paciente.email,
-                                    cc: 'lorenascferreira12@gmail.com', 
+                                    cc: $rootScope.usuarioLogado.email, 
                                     subject: 'Body Clinic',
                                     html: conteudo};
                 

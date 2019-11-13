@@ -14,8 +14,8 @@
       <span class="glyphicon glyphicon-lock form-control-feedback"></span>
     </div>
     <div class="social-auth-links text-center">
-        <button type="submit" class="btn btn-block btn-primary" ng-click="seCtrl.login()">Entrar</button><br>
-        <a href="#">Esqueci minha senha</a>
+        <button type="submit" class="btn btn-block btn-primary" ng-disabled="!seCtrl.user.email || !seCtrl.user.senha" ng-click="seCtrl.login()">Entrar</button><br>
+        <!--<a href="#">Esqueci minha senha</a>-->
     </div>
   </form>
   <br>    

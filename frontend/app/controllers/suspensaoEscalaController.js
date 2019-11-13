@@ -1,5 +1,5 @@
 (function(){
-    app.controller('SuspensaoEscalaCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', function($http, urls, msgs, tabsFactory, bcUtils){
+    app.controller('SuspensaoEscalaCtrl', ['$http', 'urls', 'msgs', 'tabsFactory', 'bcUtils', '$rootScope', function($http, urls, msgs, tabsFactory, bcUtils, $rootScope){
         const self = this;
         
         //Inicializações
@@ -24,7 +24,7 @@
                     
                     let mailInfo = {from: '"Body Clinic" bodyclinichealth@gmail.com', 
                                     to: atendimento.paciente.email,
-                                    cc: 'lorenascferreira12@gmail.com', 
+                                    cc: $rootScope.usuarioLogado.email, 
                                     subject: 'Body Clinic',
                                     html: conteudo};
                 

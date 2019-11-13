@@ -363,6 +363,7 @@
         <button type="button" class="btn btn-primary" ng-if="aCtrl.tabCreate" ng-click="aCtrl.saveAtendimento()">Salvar</button>
         <!--<button type="button" class="btn btn-info" ng-if="aCtrl.tabUpdate" ng-click="aCtrl.setPaciente()">Atualizar</button>-->
         <button type="button" class="btn btn-danger" ng-if="aCtrl.tabDelete" ng-click="aCtrl.cancelAtendimento()">Salvar Cancelamento</button>
-        <button type="button" class="btn btn-default" ng-if="aCtrl.tabUpdate || aCtrl.tabDelete || aCtrl.tabCreate" ng-click="aCtrl.getAtendimentos()">Voltar</button>
+        <button type="button" class="btn btn-default" ng-if="aCtrl.tabUpdate || aCtrl.tabDelete || aCtrl.tabCreate" 
+            ng-click="usuarioLogado.perfil !== 'PROFISSIONAL' ? aCtrl.getAtendimentos() : aCtrl.getAtendimentosByProfissional()">Voltar</button>
     </div>
 </div>
