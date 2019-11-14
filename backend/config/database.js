@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 
-module.exports = mongoose.connect('mongodb://localhost:27017/body_clinic', {useNewUrlParser: true})
+const url = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : 'mongodb://localhost:27017/body_clinic';
+
+module.exports = mongoose.connect(url, {useNewUrlParser: true})
                             .then(()=>{console.log(`BD conectado com sucesso!`);},
                                  error=>{console.log(`Falha ao conectar ao BD - ${error}`);});
                                                          
