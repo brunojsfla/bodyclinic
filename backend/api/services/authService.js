@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const usuario = require('../entitys/usuario');
 const env = require('../../.env');
 

@@ -10,6 +10,6 @@ const usuarioSchema = new mongoose.Schema({
     email : {type: String, required : true, unique: true, trim: true, lowercase: true, validate:[validaEmail, 'O e-mail informado é inválido']},
     perfil : {type : String, required : true, uppercase : true, 
         enum : ['ADMINISTRADOR', 'PROFISSIONAL', 'AUXILIAR'] }
-});
+}, {collection : 'usuario'});
 
 module.exports = restfull.model('Usuario', usuarioSchema);
