@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const usuario = require('../entitys/usuario');
-const env = require('../../.env');
 
 const sendErrorsFromDB = (res, dbErrors) =>{
     const errors = [];
@@ -21,9 +20,7 @@ const login = (req, res, next) => {
         }else 
             if(user){
                 if(user.senha === senha){
-                    const token = jwt.sign(user, env.authSecret, {
-                        expiresIn: '1 day'
-                    });
+                    const token = 'body@clinic@';
                     
                     const { nome, email, perfil, cpf } = user;
                     res.json({ nome, email, perfil, cpf, token });

@@ -1,8 +1,8 @@
-mongoimport -h ds029287.mlab.com:29287 -d heroku_q2t3qfkg -c estado -u brunojsfla -p abc123 --file estados.csv --type csv --headerline 
-mongoimport -h ds029287.mlab.com:29287 -d heroku_q2t3qfkg -c municipio -u brunojsfla -p abc123 --file municipio.csv --type csv --headerline
-mongoimport -h ds029287.mlab.com:29287 -d heroku_q2t3qfkg -c ocupacao -u brunojsfla -p abc123 --file cbo.csv --type csv --headerline
-mongoimport -h ds029287.mlab.com:29287 -d heroku_q2t3qfkg -c procedimento -u brunojsfla -p abc123 --file proc.csv --type csv --headerline
-mongoimport -h ds029287.mlab.com:29287 -d heroku_q2t3qfkg -c usuario -u brunojsfla -p abc123 --file usuario.csv --type csv --headerline
+mongoimport -h ds043358.mlab.com:43358 -d heroku_3x3zrmgj -c estado -u brunojsfla -p abc123 --file estados.csv --type csv --headerline 
+mongoimport -h ds043358.mlab.com:43358 -d heroku_3x3zrmgj -c municipio -u brunojsfla -p abc123 --file municipio.csv --type csv --headerline
+mongoimport -h ds043358.mlab.com:43358 -d heroku_3x3zrmgj -c ocupacao -u brunojsfla -p abc123 --file cbo.csv --type csv --headerline
+mongoimport -h ds043358.mlab.com:43358 -d heroku_3x3zrmgj -c procedimento -u brunojsfla -p abc123 --file proc.csv --type csv --headerline
+mongoimport -h ds043358.mlab.com:43358 -d heroku_3x3zrmgj -c usuario -u brunojsfla -p abc123 --file usuario.csv --type csv --headerline
 
 mongoimport -d body_clinic -c estado --type csv --headerline --file estados.csv
 mongoimport -d body_clinic -c municipio --type csv --headerline --file municipio.csv
