@@ -178,7 +178,7 @@
         };
 
         self.getPacienteAgendado = function(profissional, dtAtendimento, hora){         
-            let dtAt = dtAtendimento.getFullYear()+'-'+(dtAtendimento.getMonth() + 1)+'-'+(dtAtendimento.getDate() < 10 ? '0'+dtAtendimento.getDate() : dtAtendimento.getDate())+'T03:00:00.000Z';
+            let dtAt = dtAtendimento.getFullYear()+'-'+('0'+(dtAtendimento.getMonth() + 1)).slice(-2)+'-'+(dtAtendimento.getDate() < 10 ? '0'+dtAtendimento.getDate() : dtAtendimento.getDate())+'T03:00:00.000Z';
             let horaAt;
             if(hora.hora < 10)
                 horaAt = '0'+hora.hora.toString()+'00';
@@ -193,7 +193,7 @@
                     self.setPacienteById(self.escalaAux[0], hora);
                 }
             }, function(response){
-                console.error('Erro ao buscar escalas de atendimento: ',  response.data.errors);
+                console.error('Erro ao buscar escalas de atendimento: ',  response);
             });
         };
 
